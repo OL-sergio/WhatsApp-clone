@@ -24,10 +24,10 @@ public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth userAuthentication;
 
-    EditText createName, createEmail, createPassword;
-    Button  createUser;
-
     private User user;
+
+    private EditText createName, createEmail, createPassword;
+    private Button  createUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +59,6 @@ public class RegisterActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
     private void registerUser() {
