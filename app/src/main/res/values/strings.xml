@@ -9,4 +9,9 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="intreduza_o_seu_e_mail">Intreduza o seu e-mail</string>
+    <string name="intreduza_a_sua_password">Intreduza a sua password</string>
+    <string name="n_o_tem_conta_crie_uma_conta">Não tem conta? Crie uma conta.</string>
+    <string name="login">Login</string>
+    <string name="intreduza_o_nome">Intreduza o nome</string>
 </resources>

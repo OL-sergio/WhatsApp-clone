@@ -8,36 +8,8 @@
     android:background="@color/background"
     tools:context=".RegisterActivity">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.50121653" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.25" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.75" />
-
     <ImageView
-        android:id="@+id/imageView_whatsapp"
+        android:id="@+id/imageView_user"
         android:layout_width="175dp"
         android:layout_height="175dp"
         android:layout_marginTop="110dp"
@@ -47,58 +19,65 @@
         app:srcCompat="@drawable/usuario" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout_user"
+        android:id="@+id/textInputLayout_registerUser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:textColorHint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_whatsapp">
+        app:layout_constraintTop_toBottomOf="@+id/imageView_user">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textInputEditText_user"
+            android:id="@+id/textInputEditText_registerUser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
             android:background="@color/background"
-            android:hint="Intreduza o seu e-mail" />
+            android:textColor="@color/white"
+            android:inputType="textPersonName"
+            android:hint="@string/intreduza_o_nome" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout_email"
+        android:id="@+id/textInputLayout_registerEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:textColorHint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_user">
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_registerUser">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textInputEditText_email"
+            android:id="@+id/textInputEditText_registerEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:background="@color/background"
-            android:hint="Intreduza o nome" />
+            android:inputType="textEmailSubject"
+            android:hint="@string/intreduza_o_seu_e_mail" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout_password"
+        android:id="@+id/textInputLayout_registerPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:textColorHint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_email">
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_registerEmail">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputEditText_registerPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:background="@color/background"
-            android:hint="Intreduza a sua password" />
+            android:inputType="textPassword"
+            android:hint="@string/intreduza_a_sua_password" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -112,7 +91,6 @@
         android:backgroundTint="@color/backgroundButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_password" />
-
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_registerPassword" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

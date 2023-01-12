@@ -7,21 +7,28 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import udemy.java.whatsapp_clone.databinding.ActivityLoginBinding;
+
 public class LoginActivity extends AppCompatActivity {
 
-    TextView register;
+    private ActivityLoginBinding binding;
+
+    TextView goCreateUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
 
-        register = findViewById(R.id.textView_goCreateAccount);
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
-        register.setOnClickListener(new View.OnClickListener() {
+        goCreateUser =  binding.textViewGoCreateAccount;
+
+        goCreateUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
             }
         });

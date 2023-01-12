@@ -8,34 +8,6 @@
     android:padding="36dp"
     tools:context=".LoginActivity">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.50121653" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.25" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.75" />
-
     <ImageView
         android:id="@+id/imageView_whatsapp"
         android:layout_width="200dp"
@@ -51,60 +23,66 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:textColorHint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView_whatsapp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textInputEditText_email"
+            android:id="@+id/textInputEditText_loginEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:background="@color/background"
-            android:hint="Intreduza o seu e-mail" />
+            android:inputType="textEmailAddress"
+            android:hint="@string/intreduza_o_seu_e_mail" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout_password"
+        android:id="@+id/textInputLayout_loginPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:textColorHint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout_email">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputEditText_loginPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:background="@color/background"
-            android:hint="Intreduza a sua password" />
+            android:inputType="textPassword"
+            android:hint="@string/intreduza_a_sua_password" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/button_login"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginTop="16dp"
-        android:text="Login"
+        android:text="@string/login"
         android:textAllCaps="false"
         android:backgroundTint="@color/backgroundButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_password" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_loginPassword" />
 
     <TextView
         android:id="@+id/textView_goCreateAccount"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Não tem conta? Crie uma conta."
+        android:layout_marginTop="8dp"
+        android:text="@string/n_o_tem_conta_crie_uma_conta"
         android:textAlignment="center"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/button_login" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
