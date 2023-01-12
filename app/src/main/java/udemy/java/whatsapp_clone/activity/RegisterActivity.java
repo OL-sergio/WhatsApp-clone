@@ -1,4 +1,4 @@
-package udemy.java.whatsapp_clone;
+package udemy.java.whatsapp_clone.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
