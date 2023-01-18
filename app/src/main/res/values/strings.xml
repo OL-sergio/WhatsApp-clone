@@ -24,4 +24,5 @@
     <string name="Introduza_email_valido">"Introduza um email valido! "</string>
     <string name="utilizador_eamil_nao_existe">\"Utilizador e e-amil não existe! \"</string>
     <string name="erro_realizar_login">\"Erro a realizar Login: \"</string>
+    <string name="sucesso_criar_utilizador">Sucesso ao criar utilizador!</string>
 </resources>
