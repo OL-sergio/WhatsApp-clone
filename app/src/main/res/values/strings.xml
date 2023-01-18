@@ -14,4 +14,14 @@
     <string name="n_o_tem_conta_crie_uma_conta">Não tem conta? Crie uma conta.</string>
     <string name="login">Login</string>
     <string name="intreduza_o_nome">Intreduza o nome</string>
+    <string name="intreduzir_passaword">Intreduzir a passaword!</string>
+    <string name="intreduza_email">Intreduza um email!</string>
+    <string name="Intreduza_nome">Intreduza o Nome!</string>
+    <string name="Intreduza_senha_mais_forte">Intreduza uma senha mais forte!</string>
+    <string name="Intreduza_email_valido">Intreduza um email valido!</string>
+    <string name="Esta_conta_existe">Esta conta já existe!</string>
+    <string name="Erro_criar_utilizador">"Erro ao criar utilizador: "</string>
+    <string name="Introduza_email_valido">"Introduza um email valido! "</string>
+    <string name="utilizador_eamil_nao_existe">\"Utilizador e e-amil não existe! \"</string>
+    <string name="erro_realizar_login">\"Erro a realizar Login: \"</string>
 </resources>

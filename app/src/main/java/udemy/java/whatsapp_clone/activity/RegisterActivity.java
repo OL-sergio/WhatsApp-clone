@@ -8,12 +8,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
+import java.util.Base64;
+
+import udemy.java.whatsapp_clone.R;
 import udemy.java.whatsapp_clone.config.FirebaseConfiguration;
 import udemy.java.whatsapp_clone.databinding.ActivityRegisterBinding;
 import udemy.java.whatsapp_clone.model.User;
@@ -28,6 +36,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     private EditText createName, createEmail, createPassword;
     private Button  createUser;
+
+    private String textName, textEmail, textPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,32 +57,70 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String textName = createName.getText().toString();
-                String textEmail = createEmail.getText().toString();
-                String textPassword = createPassword.getText().toString();
+                textName = createName.getText().toString();
+                textEmail = createEmail.getText().toString();
+                textPassword = createPassword.getText().toString();
 
-                user = new User();
-                user.setName(textName);
-                user.setEmail(textEmail);
-                user.setPassword(textPassword);
-                registerUser();
-
+                createUser();
             }
         });
+    }
+
+    private void createUser() {
+
+        if (!textName.isEmpty()){
+            if (!textEmail.isEmpty()){
+                if (!textPassword.isEmpty()){
+
+                    user = new User();
+                    user.setName(textName);
+                    user.setEmail(textEmail);
+                    user.setPassword(textPassword);
+                    registerUser();
+
+                }else {
+                    Toast.makeText(this, R.string.intreduza_a_sua_password , Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(this, R.string.intreduza_email, Toast.LENGTH_SHORT).show();
+            }
+        }else {
+            Toast.makeText(this, R.string.Intreduza_nome, Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private void registerUser() {
         userAuthentication = FirebaseConfiguration.getUserAuthentication();
         userAuthentication.createUserWithEmailAndPassword(
-                user.getEmail() , user.getPassword()
+                user.getEmail(),
+                user.getPassword()
         ).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
-                    Intent intent = new Intent( RegisterActivity.this,  LoginActivity.class);
-                    startActivity(intent);
+                    startActivity( new Intent(RegisterActivity.this, LoginActivity.class));
+                } else {
+                    userValidation(task);
                 }
             }
         });
+    }
+
+    private void userValidation(Task task) {
+        String exception;
+        try {
+            throw  task.getException();
+        } catch (FirebaseAuthWeakPasswordException e ) {
+            exception = getString(R.string.Intreduza_senha_mais_forte);
+        } catch (FirebaseAuthInvalidCredentialsException e ) {
+            exception = getString(R.string.Intreduza_email_valido);
+        } catch (FirebaseAuthUserCollisionException e ) {
+            exception = getString(R.string.Esta_conta_existe);
+        } catch (Exception e ){
+            exception = getString(R.string.Erro_criar_utilizador) + e.getMessage();
+            e.printStackTrace();
+        }
+        Toast.makeText(RegisterActivity.this, exception, Toast.LENGTH_SHORT).show();
     }
 }
