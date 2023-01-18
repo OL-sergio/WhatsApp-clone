@@ -104,22 +104,29 @@ public class LoginActivity extends AppCompatActivity {
                 if (task.isSuccessful()){
                     goToApp();
                 } else {
-                    String exception;
-                    try {
-                        throw task.getException();
 
-                    } catch (FirebaseAuthInvalidCredentialsException e ) {
-                        exception = getString(R.string.Introduza_email_valido) ;
-                    } catch (FirebaseAuthInvalidUserException e ){
-                        exception = getString(R.string.utilizador_eamil_nao_existe);
-                    } catch (Exception e ){
-                        exception = getString(R.string.erro_realizar_login) + e.getMessage();
-                        e.printStackTrace();
-                    }
-                    Toast.makeText(LoginActivity.this, exception, Toast.LENGTH_SHORT).show();
+                    userValidation(task);
+
                 }
             }
         });
+
+    }
+
+    private void userValidation(Task task) {
+        String exception;
+        try {
+            throw task.getException();
+
+        } catch (FirebaseAuthInvalidCredentialsException e ) {
+            exception = getString(R.string.Introduza_email_valido) ;
+        } catch (FirebaseAuthInvalidUserException e ){
+            exception = getString(R.string.utilizador_eamil_nao_existe);
+        } catch (Exception e ){
+            exception = getString(R.string.erro_realizar_login) + e.getMessage();
+            e.printStackTrace();
+        }
+        Toast.makeText(LoginActivity.this, exception, Toast.LENGTH_SHORT).show();
 
     }
 
