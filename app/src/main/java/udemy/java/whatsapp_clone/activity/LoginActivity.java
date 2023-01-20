@@ -17,6 +17,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseUser;
 
 import udemy.java.whatsapp_clone.R;
 import udemy.java.whatsapp_clone.config.FirebaseConfiguration;
@@ -64,6 +65,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 userAuthentication();
 
+
+
             }
         });
 
@@ -75,6 +78,14 @@ public class LoginActivity extends AppCompatActivity {
             });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser userLogged = FirebaseConfiguration.getUserAuthentication().getCurrentUser();
+        if (userLogged != null ){
+            goToApp();
+        }
+    }
 
     private void userAuthentication() {
         if (!textEmail.isEmpty()){

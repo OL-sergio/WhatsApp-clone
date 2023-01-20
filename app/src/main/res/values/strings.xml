@@ -25,4 +25,7 @@
     <string name="utilizador_eamil_nao_existe">\"Utilizador e e-amil não existe! \"</string>
     <string name="erro_realizar_login">\"Erro a realizar Login: \"</string>
     <string name="sucesso_criar_utilizador">Sucesso ao criar utilizador!</string>
+    <string name="pesquisar">Pesquisar</string>
+    <string name="configura_es">Configurações</string>
+    <string name="sair">Sair</string>
 </resources>
