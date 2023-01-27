@@ -24,6 +24,7 @@ import java.util.Base64;
 import udemy.java.whatsapp_clone.R;
 import udemy.java.whatsapp_clone.config.FirebaseConfiguration;
 import udemy.java.whatsapp_clone.databinding.ActivityRegisterBinding;
+import udemy.java.whatsapp_clone.helper.Base64Custom;
 import udemy.java.whatsapp_clone.model.User;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -101,6 +102,17 @@ public class RegisterActivity extends AppCompatActivity {
                 if (task.isSuccessful()){
                     Toast.makeText(RegisterActivity.this, R.string.sucesso_criar_utilizador, Toast.LENGTH_SHORT).show();
                     finish();
+
+                    try {
+                        String idUserIdentification = Base64Custom.encryptionBase64(user.getEmail());
+                        user.setUID(idUserIdentification);
+                        user.saveUser();
+
+
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+
                     //startActivity( new Intent(RegisterActivity.this, LoginActivity.class));
                 } else {
                     userValidation(task);
