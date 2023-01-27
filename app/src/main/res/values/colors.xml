@@ -10,5 +10,6 @@
 
     <color name="background">#245448</color>
     <color name="backgroundButton">#12352D</color>
+    <color name="borderImage">#EEEEEE</color>
 
 </resources>
