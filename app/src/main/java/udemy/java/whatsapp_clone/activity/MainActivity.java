@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -79,9 +80,17 @@ public class MainActivity extends AppCompatActivity {
                 finish();
                 break;
 
+            case R.id.menuConfig:
+                openConfigurations();
+                break;
+
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openConfigurations() {
+        startActivity( new Intent(MainActivity.this, ConfigurationsActivity.class));
     }
 
     private void logOutUser() {
