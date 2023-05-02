@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Permission {
 
-    public static void permissionValidation(String[] permissions, Activity activity, int requestCode){
+    public static boolean permissionValidation(String[] permissions, Activity activity, int requestCode){
 
         if (Build.VERSION.SDK_INT >= 23){
             List<String> listPermissions = new ArrayList<>();
@@ -30,7 +30,7 @@ public class Permission {
             }
 
             if (listPermissions.isEmpty()){
-                return;
+                return true;
             }
 
             String[] newPermissions = new String[listPermissions.size()];
@@ -38,7 +38,6 @@ public class Permission {
 
             ActivityCompat.requestPermissions(activity, newPermissions, requestCode);
         }
-
-    };
-
+        return true;
+    }
 }
