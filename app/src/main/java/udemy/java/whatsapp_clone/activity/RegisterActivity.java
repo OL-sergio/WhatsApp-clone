@@ -2,6 +2,7 @@ package udemy.java.whatsapp_clone.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,10 +13,10 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
@@ -35,7 +36,9 @@ public class RegisterActivity extends AppCompatActivity {
 
     private User user;
 
-    private EditText createName, createEmail, createPassword;
+    private TextInputEditText createName;
+    private TextInputEditText createEmail;
+    private TextInputEditText createPassword;
     private Button  createUser;
 
     private String textName, textEmail, textPassword;
@@ -45,7 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         binding = ActivityRegisterBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
+        ConstraintLayout view = binding.getRoot();
         setContentView(view);
 
         createName = binding.textInputEditTextRegisterUser;
