@@ -12,19 +12,23 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.View;
+import android.widget.ImageButton;
 
-import java.io.File;
-import java.util.Objects;
+import java.io.IOException;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import udemy.java.whatsapp_clone.R;
+
+
 import udemy.java.whatsapp_clone.databinding.ActivityConfigurationsBinding;
 import udemy.java.whatsapp_clone.helper.Permission;
 
@@ -33,13 +37,14 @@ public class ConfigurationsActivity extends AppCompatActivity {
 
     private ActivityConfigurationsBinding binding;
 
+    private CircleImageView circleImageViewSetImage;
+    private ImageButton imageButtonTakePhoto, imageButtonInsertGallery;
     public String[] permissionsNecessary = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA
     };
 
-    int REQUEST_CAMARA = 100;
-    int REQUEST_GALLERY = 200;
+    Bitmap image = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,22 +58,25 @@ public class ConfigurationsActivity extends AppCompatActivity {
         int requestCode = 1;
         Permission.permissionValidation(permissionsNecessary, this, requestCode);
 
-
-
         Toolbar toolbarMain  =  findViewById(R.id.toolbarMain);
         toolbarMain.setTitle("Configurações");
         setSupportActionBar(toolbarMain);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        binding.imageButtonImagePhoto.setOnClickListener(new View.OnClickListener() {
+
+        circleImageViewSetImage = binding.circleImageViewPhotoProfile;
+        imageButtonInsertGallery = binding.imageButtonImageInsertGallery;
+        imageButtonTakePhoto = binding.imageButtonImagePhoto;
+
+       imageButtonTakePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 takePhoto();
             }
         });
 
-        binding.imageButtonImageInsertGallery.setOnClickListener(new View.OnClickListener() {
+        imageButtonInsertGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 insertPhoto();
@@ -79,34 +87,55 @@ public class ConfigurationsActivity extends AppCompatActivity {
 
     private void insertPhoto() {
         Intent intent = new Intent( Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI );
-        someActivityResultLauncher.launch(intent);
+        insertFromGalleryActivityResultLauncher.launch(intent);
     }
 
 
     private void takePhoto() {
         Intent intent = new Intent( MediaStore.ACTION_IMAGE_CAPTURE );
-        someActivityResultLauncher.launch(intent);
+        takePhotoActivityResultLauncher.launch(intent);
     }
 
 
     // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
-    ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+    ActivityResultLauncher<Intent> takePhotoActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result ) {
                    if( result.getResultCode() == Activity.RESULT_OK) {
-                       Bitmap image = null;
-                       try {
-                           switch (result.getResultCode()){
 
-                           }
+                       assert result.getData() != null;
+                       Bundle localImageSelection  = result.getData().getExtras();
+                       image  = (Bitmap) localImageSelection.get("data");
 
-
-                       }catch (Exception e) {
-
+                       if (image != null){
+                               circleImageViewSetImage.setImageBitmap(image);
                        }
                    }
+                }
+            });
+
+    ActivityResultLauncher<Intent> insertFromGalleryActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result ) {
+
+                    if( result.getResultCode() == Activity.RESULT_OK) {
+                        assert result.getData() != null;
+                        Uri uri = result.getData().getData();
+
+                        try {
+                            image = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                            if (image != null){
+                                circleImageViewSetImage.setImageBitmap(image);
+                            }
+
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
                 }
             });
 
