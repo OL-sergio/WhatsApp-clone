@@ -12,13 +12,16 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 
+import java.io.File;
 import java.util.Objects;
 
 import udemy.java.whatsapp_clone.R;
@@ -35,8 +38,8 @@ public class ConfigurationsActivity extends AppCompatActivity {
             Manifest.permission.CAMERA
     };
 
-    private static final int SELECT_CAMARA = 100;
-    private static final int SELECT_GALLERY = 200;
+    int REQUEST_CAMARA = 100;
+    int REQUEST_GALLERY = 200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,7 @@ public class ConfigurationsActivity extends AppCompatActivity {
         //Validation Permissions
         int requestCode = 1;
         Permission.permissionValidation(permissionsNecessary, this, requestCode);
+
 
 
         Toolbar toolbarMain  =  findViewById(R.id.toolbarMain);
@@ -64,24 +68,45 @@ public class ConfigurationsActivity extends AppCompatActivity {
             }
         });
 
+        binding.imageButtonImageInsertGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                insertPhoto();
+            }
+        });
+
     }
 
-    private  void takePhoto() {
-        openSomeActivityForResult();
-    }
-
-    public void openSomeActivityForResult() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    private void insertPhoto() {
+        Intent intent = new Intent( Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI );
         someActivityResultLauncher.launch(intent);
     }
+
+
+    private void takePhoto() {
+        Intent intent = new Intent( MediaStore.ACTION_IMAGE_CAPTURE );
+        someActivityResultLauncher.launch(intent);
+    }
+
 
     // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
     ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
-                public void onActivityResult(ActivityResult result) {
+                public void onActivityResult(ActivityResult result ) {
+                   if( result.getResultCode() == Activity.RESULT_OK) {
+                       Bitmap image = null;
+                       try {
+                           switch (result.getResultCode()){
 
+                           }
+
+
+                       }catch (Exception e) {
+
+                       }
+                   }
                 }
             });
 
