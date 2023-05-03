@@ -1,15 +1,22 @@
 package udemy.java.whatsapp_clone.activity;
 
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 
 import java.util.Objects;
@@ -27,6 +34,9 @@ public class ConfigurationsActivity extends AppCompatActivity {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA
     };
+
+    private static final int SELECT_CAMARA = 100;
+    private static final int SELECT_GALLERY = 200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +57,33 @@ public class ConfigurationsActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        binding.imageButtonImagePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                takePhoto();
+            }
+        });
+
     }
+
+    private  void takePhoto() {
+        openSomeActivityForResult();
+    }
+
+    public void openSomeActivityForResult() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        someActivityResultLauncher.launch(intent);
+    }
+
+    // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
+    ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+
+                }
+            });
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
