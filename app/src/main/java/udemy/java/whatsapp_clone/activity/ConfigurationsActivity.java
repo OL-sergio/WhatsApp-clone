@@ -22,14 +22,25 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import udemy.java.whatsapp_clone.R;
 
 
+import udemy.java.whatsapp_clone.config.FirebaseConfiguration;
 import udemy.java.whatsapp_clone.databinding.ActivityConfigurationsBinding;
+import udemy.java.whatsapp_clone.helper.Base64Custom;
+import udemy.java.whatsapp_clone.helper.FirebaseUser;
 import udemy.java.whatsapp_clone.helper.Permission;
 
 
@@ -39,6 +50,9 @@ public class ConfigurationsActivity extends AppCompatActivity {
 
     private CircleImageView circleImageViewSetImage;
     private ImageButton imageButtonTakePhoto, imageButtonInsertGallery;
+    private StorageReference storageReference;
+    private String userIdentification;
+
     public String[] permissionsNecessary = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA
@@ -54,15 +68,18 @@ public class ConfigurationsActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        //Validation Permissions
-        int requestCode = 1;
-        Permission.permissionValidation(permissionsNecessary, this, requestCode);
-
         Toolbar toolbarMain  =  findViewById(R.id.toolbarMain);
         toolbarMain.setTitle("Configurações");
         setSupportActionBar(toolbarMain);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //Validation Permissions
+        int requestCode = 1;
+        Permission.permissionValidation(permissionsNecessary, this, requestCode);
+
+        storageReference = FirebaseConfiguration.getFirebaseStorage();
+        userIdentification = FirebaseUser.getUserIdentification();
 
 
         circleImageViewSetImage = binding.circleImageViewPhotoProfile;
@@ -110,7 +127,10 @@ public class ConfigurationsActivity extends AppCompatActivity {
                        image  = (Bitmap) localImageSelection.get("data");
 
                        if (image != null){
-                               circleImageViewSetImage.setImageBitmap(image);
+
+                           circleImageViewSetImage.setImageBitmap(image);
+                           saveImageOnFirebase();
+
                        }
                    }
                 }
@@ -123,13 +143,19 @@ public class ConfigurationsActivity extends AppCompatActivity {
                 public void onActivityResult(ActivityResult result ) {
 
                     if( result.getResultCode() == Activity.RESULT_OK) {
+
                         assert result.getData() != null;
                         Uri uri = result.getData().getData();
 
                         try {
+
                             image = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+
                             if (image != null){
+
                                 circleImageViewSetImage.setImageBitmap(image);
+                                saveImageOnFirebase();
+
                             }
 
                         } catch (IOException e) {
@@ -138,6 +164,37 @@ public class ConfigurationsActivity extends AppCompatActivity {
                     }
                 }
             });
+
+    public void saveImageOnFirebase() {
+
+        //Retrieve image from firebase
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 65, baos);
+
+        byte [] dataImage = baos.toByteArray();
+
+        //Save image on firebase
+        StorageReference imageRef = storageReference
+                .child("images")
+                .child("profile")
+                .child(userIdentification)
+                // .child(userIdentification + ".jpeg")
+                .child("profile.jpeg");
+
+        UploadTask uploadTask = imageRef.putBytes( dataImage );
+
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(ConfigurationsActivity.this, "Sucesso a criar iamgem ", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
