@@ -1,15 +1,6 @@
 package udemy.java.whatsapp_clone.activity;
 
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -17,16 +8,29 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -35,14 +39,10 @@ import java.io.IOException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import udemy.java.whatsapp_clone.R;
-
-
 import udemy.java.whatsapp_clone.config.FirebaseConfiguration;
 import udemy.java.whatsapp_clone.databinding.ActivityConfigurationsBinding;
-import udemy.java.whatsapp_clone.helper.Base64Custom;
 import udemy.java.whatsapp_clone.helper.FirebaseUser;
 import udemy.java.whatsapp_clone.helper.Permission;
-
 
 public class ConfigurationsActivity extends AppCompatActivity {
 
@@ -50,6 +50,7 @@ public class ConfigurationsActivity extends AppCompatActivity {
 
     private CircleImageView circleImageViewSetImage;
     private ImageButton imageButtonTakePhoto, imageButtonInsertGallery;
+    private EditText userProfileName;
     private StorageReference storageReference;
     private String userIdentification;
 
@@ -74,10 +75,6 @@ public class ConfigurationsActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //Validation Permissions
-        int requestCode = 1;
-        Permission.permissionValidation(permissionsNecessary, this, requestCode);
-
         storageReference = FirebaseConfiguration.getFirebaseStorage();
         userIdentification = FirebaseUser.getUserIdentification();
 
@@ -85,6 +82,28 @@ public class ConfigurationsActivity extends AppCompatActivity {
         circleImageViewSetImage = binding.circleImageViewPhotoProfile;
         imageButtonInsertGallery = binding.imageButtonImageInsertGallery;
         imageButtonTakePhoto = binding.imageButtonImagePhoto;
+        userProfileName = binding.editTextTextPersonName;
+
+        //Validation Permissions
+        int requestCode = 1;
+        Permission.permissionValidation(permissionsNecessary, this, requestCode);
+
+        //Recover data from user
+        com.google.firebase.auth.FirebaseUser user = FirebaseUser.getCurrentUser();
+
+        Uri url = user.getPhotoUrl();
+
+        if (url != null ) {
+
+       Glide.with(ConfigurationsActivity.this)
+                    .asBitmap()
+                    .load(url)
+                    .into(circleImageViewSetImage);
+
+        }
+        circleImageViewSetImage.setImageResource(R.drawable.padrao);
+
+        userProfileName.setText(user.getDisplayName());
 
        imageButtonTakePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +147,11 @@ public class ConfigurationsActivity extends AppCompatActivity {
 
                        if (image != null){
 
-                           circleImageViewSetImage.setImageBitmap(image);
+                           Glide.with(ConfigurationsActivity.this)
+                                   .asBitmap()
+                                   .load(image)
+                                   .into(circleImageViewSetImage);
+
                            saveImageOnFirebase();
 
                        }
@@ -139,21 +162,24 @@ public class ConfigurationsActivity extends AppCompatActivity {
     ActivityResultLauncher<Intent> insertFromGalleryActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
+                @RequiresApi(api = Build.VERSION_CODES.P)
                 @Override
                 public void onActivityResult(ActivityResult result ) {
 
                     if( result.getResultCode() == Activity.RESULT_OK) {
-
                         assert result.getData() != null;
-                        Uri uri = result.getData().getData();
-
+                        Uri url = result.getData().getData();
                         try {
 
-                            image = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                           image = MediaStore.Images.Media.getBitmap(getContentResolver(), url);
 
                             if (image != null){
 
-                                circleImageViewSetImage.setImageBitmap(image);
+                                Glide.with(ConfigurationsActivity.this)
+                                        .asBitmap()
+                                        .load(image)
+                                        .into(circleImageViewSetImage);
+
                                 saveImageOnFirebase();
 
                             }
@@ -161,20 +187,23 @@ public class ConfigurationsActivity extends AppCompatActivity {
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
+
                     }
                 }
             });
 
+
     public void saveImageOnFirebase() {
 
         //Retrieve image from firebase
+        circleImageViewSetImage.setDrawingCacheEnabled(true);
+        circleImageViewSetImage.buildDrawingCache();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 65, baos);
-
         byte [] dataImage = baos.toByteArray();
 
         //Save image on firebase
-        StorageReference imageRef = storageReference
+       final StorageReference imageRef = storageReference
                 .child("images")
                 .child("profile")
                 .child(userIdentification)
@@ -186,14 +215,30 @@ public class ConfigurationsActivity extends AppCompatActivity {
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-
+                Toast.makeText(ConfigurationsActivity.this, "Falha á criar imagen ",
+                        Toast.LENGTH_SHORT).show();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(ConfigurationsActivity.this, "Sucesso a criar iamgem ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ConfigurationsActivity.this, "Sucesso á criar imagen ",
+                        Toast.LENGTH_SHORT).show();
+
+                imageRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        Uri url = task.getResult();
+                        updatePhotoUser(url);
+                        
+
+                    }
+                });
             }
         });
+    }
+
+    public void updatePhotoUser(Uri url) {
+        FirebaseUser.updateUserPhoto(url);
     }
 
     @Override

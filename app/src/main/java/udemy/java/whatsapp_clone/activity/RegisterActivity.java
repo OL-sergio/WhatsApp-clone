@@ -22,6 +22,7 @@ import udemy.java.whatsapp_clone.R;
 import udemy.java.whatsapp_clone.config.FirebaseConfiguration;
 import udemy.java.whatsapp_clone.databinding.ActivityRegisterBinding;
 import udemy.java.whatsapp_clone.helper.Base64Custom;
+import udemy.java.whatsapp_clone.helper.FirebaseUser;
 import udemy.java.whatsapp_clone.model.User;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -101,6 +102,9 @@ public class RegisterActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
                     Toast.makeText(RegisterActivity.this, R.string.sucesso_criar_utilizador, Toast.LENGTH_SHORT).show();
+
+                    FirebaseUser.updateUserName(user.getName());
+
                     finish();
 
                     try {
