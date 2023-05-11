@@ -14,6 +14,7 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import java.util.Objects;
 
 import udemy.java.whatsapp_clone.config.FirebaseConfiguration;
+import udemy.java.whatsapp_clone.model.User;
 
 public class FirebaseUser {
 
@@ -77,6 +78,19 @@ public class FirebaseUser {
             e.printStackTrace();
             return false;
         }
+    }
+    public static User getCurrentUserData() {
+        com.google.firebase.auth.FirebaseUser firebaseUser = getCurrentUser();
+        User userdata = new User();
+        userdata.setEmail(firebaseUser.getEmail() );
+        userdata.setName(firebaseUser.getDisplayName() );
+
+        if (firebaseUser.getPhotoUrl() == null){
+            userdata.setPhoto("");
+        } else {
+            userdata.setPhoto(firebaseUser.getPhotoUrl().toString() );
+        }
+        return userdata;
     }
 }
 

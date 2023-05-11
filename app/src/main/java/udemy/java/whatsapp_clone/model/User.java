@@ -3,14 +3,19 @@ package udemy.java.whatsapp_clone.model;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import udemy.java.whatsapp_clone.config.FirebaseConfiguration;
+import udemy.java.whatsapp_clone.helper.FirebaseUser;
 
 public class User {
 
     private String UID;
     private String name;
-    private String Email;
-    private String Password;
+    private String email;
+    private String password;
+    private String photo;
 
     public User() {
 
@@ -18,10 +23,35 @@ public class User {
 
     public void saveUser(){
         DatabaseReference databaseReference = FirebaseConfiguration.getDatabaseReference();
-        DatabaseReference user = databaseReference.child("users").child(getUID());
+        DatabaseReference user = databaseReference
+                .child("users")
+                .child(getUID());
 
         user.setValue(this);
     }
+
+    public void updateUser(){
+        String userID = FirebaseUser.getUserIdentification();
+        DatabaseReference databaseReference = FirebaseConfiguration.getDatabaseReference();
+
+        DatabaseReference userRef = databaseReference
+                .child("users")
+                .child(userID);
+
+        Map<String, Object> userData = mapUpdate();
+        userRef.updateChildren(userData);
+
+    }
+
+    @Exclude
+    public Map<String, Object> mapUpdate (){
+        HashMap<String, Object> userMap = new HashMap<>();
+            userMap.put("email", getEmail() );
+            userMap.put("name", getName() );
+            userMap.put("photo", getPhoto());
+        return userMap;
+    }
+
 
     @Exclude
     public String getUID() {
@@ -41,19 +71,29 @@ public class User {
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
+
     public void setEmail(String email) {
-        Email = email;
+        this.email = email;
     }
 
     @Exclude
     public String getPassword() {
-        return Password;
+        return password;
     }
 
     public void setPassword(String password) {
-        Password = password;
+        this.password = password;
     }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
 }

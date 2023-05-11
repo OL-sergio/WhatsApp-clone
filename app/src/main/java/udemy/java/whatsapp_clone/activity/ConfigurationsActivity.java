@@ -1,6 +1,8 @@
 package udemy.java.whatsapp_clone.activity;
 
 
+import static udemy.java.whatsapp_clone.helper.FirebaseUser.*;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -14,6 +16,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -43,6 +46,7 @@ import udemy.java.whatsapp_clone.config.FirebaseConfiguration;
 import udemy.java.whatsapp_clone.databinding.ActivityConfigurationsBinding;
 import udemy.java.whatsapp_clone.helper.FirebaseUser;
 import udemy.java.whatsapp_clone.helper.Permission;
+import udemy.java.whatsapp_clone.model.User;
 
 public class ConfigurationsActivity extends AppCompatActivity {
 
@@ -51,15 +55,20 @@ public class ConfigurationsActivity extends AppCompatActivity {
     private CircleImageView circleImageViewSetImage;
     private ImageButton imageButtonTakePhoto, imageButtonInsertGallery;
     private EditText userProfileName;
+    private ImageView editUserName;
+
     private StorageReference storageReference;
+
     private String userIdentification;
+    private User currentUser;
+
+    Bitmap image = null;
+
 
     public String[] permissionsNecessary = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA
     };
-
-    Bitmap image = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,34 +85,57 @@ public class ConfigurationsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         storageReference = FirebaseConfiguration.getFirebaseStorage();
-        userIdentification = FirebaseUser.getUserIdentification();
+        userIdentification = getUserIdentification();
+        currentUser = FirebaseUser.getCurrentUserData();
 
 
         circleImageViewSetImage = binding.circleImageViewPhotoProfile;
         imageButtonInsertGallery = binding.imageButtonImageInsertGallery;
         imageButtonTakePhoto = binding.imageButtonImagePhoto;
         userProfileName = binding.editTextTextPersonName;
+        editUserName = binding.imageViewEditUserName;
+
 
         //Validation Permissions
         int requestCode = 1;
         Permission.permissionValidation(permissionsNecessary, this, requestCode);
 
         //Recover data from user
-        com.google.firebase.auth.FirebaseUser user = FirebaseUser.getCurrentUser();
+        com.google.firebase.auth.FirebaseUser user = getCurrentUser();
 
         Uri url = user.getPhotoUrl();
 
         if (url != null ) {
 
-       Glide.with(ConfigurationsActivity.this)
-                    .asBitmap()
-                    .load(url)
-                    .into(circleImageViewSetImage);
+          Glide.with(ConfigurationsActivity.this)
+                        .asBitmap()
+                        .load(url)
+                        .into(circleImageViewSetImage);
 
         }
+
         circleImageViewSetImage.setImageResource(R.drawable.padrao);
 
         userProfileName.setText(user.getDisplayName());
+
+        editUserName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String username = userProfileName.getText().toString();
+                boolean returnData = FirebaseUser.updateUserName(username);
+                    if( returnData) {
+
+                        currentUser.setName(username);
+                        currentUser.updateUser();
+
+                        Toast.makeText(ConfigurationsActivity.this,
+                                "Nome alterado com sucesso! ", Toast.LENGTH_SHORT).show();
+
+
+                    }
+                 }
+        });
 
        imageButtonTakePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,7 +163,6 @@ public class ConfigurationsActivity extends AppCompatActivity {
         Intent intent = new Intent( MediaStore.ACTION_IMAGE_CAPTURE );
         takePhotoActivityResultLauncher.launch(intent);
     }
-
 
     // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
     ActivityResultLauncher<Intent> takePhotoActivityResultLauncher = registerForActivityResult(
@@ -192,7 +223,6 @@ public class ConfigurationsActivity extends AppCompatActivity {
                 }
             });
 
-
     public void saveImageOnFirebase() {
 
         //Retrieve image from firebase
@@ -238,7 +268,12 @@ public class ConfigurationsActivity extends AppCompatActivity {
     }
 
     public void updatePhotoUser(Uri url) {
-        FirebaseUser.updateUserPhoto(url);
+        boolean userData = updateUserPhoto(url);
+        if( userData ){
+            currentUser.setPhoto(url.toString());
+            currentUser.updateUser();
+            Toast.makeText(this, "Foto actualizada", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
