@@ -22,14 +22,14 @@
         app:civ_border_width="2dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
@@ -59,7 +59,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/ic_edit_verde_24" />
+            android:background="@drawable/ic_edit_verde_24"
+            android:contentDescription="@null" />
     </LinearLayout>
 
     <TextView
@@ -82,12 +83,12 @@
         android:layout_height="48dp"
         android:background="#E7E6E6"
         android:src="@drawable/ic_camera"
+        android:importantForAccessibility="no"
         app:layout_constraintBottom_toBottomOf="@+id/circleImage_viewPhotoProfile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageButton_ImageInsertGallery"
         app:layout_constraintTop_toTopOf="@+id/circleImage_viewPhotoProfile"
-        app:layout_constraintVertical_bias="0.96"
-        tools:ignore="ContentDescription" />
+        app:layout_constraintVertical_bias="0.96" />
 
     <ImageButton
         android:id="@+id/imageButton_ImageInsertGallery"
@@ -95,12 +96,12 @@
         android:layout_height="48dp"
         android:background="#E7E6E6"
         android:src="@drawable/ic_insert_photo"
+        android:importantForAccessibility="no"
         app:layout_constraintBottom_toBottomOf="@+id/circleImage_viewPhotoProfile"
         app:layout_constraintEnd_toStartOf="@+id/imageButton_ImagePhoto"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/circleImage_viewPhotoProfile"
-        app:layout_constraintVertical_bias="0.96"
-        tools:ignore="ContentDescription" />
+        app:layout_constraintVertical_bias="0.96" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

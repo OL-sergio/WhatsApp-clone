@@ -1,27 +1,122 @@
 package udemy.java.whatsapp_clone.fragment;
 
+
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
-import udemy.java.whatsapp_clone.R;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+
+import udemy.java.whatsapp_clone.adapter.AdapterContacts;
+import udemy.java.whatsapp_clone.config.FirebaseConfiguration;
+
+import udemy.java.whatsapp_clone.databinding.FragmentContactsBinding;
+import udemy.java.whatsapp_clone.model.User;
 
 public class ContactsFragment extends Fragment {
 
+    private FragmentContactsBinding binding;
+
+    private ArrayList<User> listUsers = new ArrayList<>();
+
+    private DatabaseReference firebaseRef = FirebaseConfiguration.getDatabaseReference();
+
+    private ValueEventListener valueEventListenerGetUsers;
+
+
+    private RecyclerView recyclerViewUsersContacts;
+    private AdapterContacts adapterListContacts;
+
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(
+            @NonNull LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState
+    ) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_contacts, container, false);
+       binding = FragmentContactsBinding.inflate(inflater, container, false);
+       return binding.getRoot();
+    }
+
+
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        recyclerViewUsersContacts = binding.recyclerViewViewUsers;
+
+        firebaseRef = FirebaseConfiguration.getDatabaseReference().child("users");
+
+        adapterListContacts = new AdapterContacts(listUsers, getActivity());
+
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
+
+        recyclerViewUsersContacts.setLayoutManager(layoutManager);
+        recyclerViewUsersContacts.setHasFixedSize(true);
+        recyclerViewUsersContacts.addItemDecoration( new DividerItemDecoration(requireContext(), LinearLayout.VERTICAL ));
+        recyclerViewUsersContacts.setAdapter(adapterListContacts);
+
+       /* User tasks1 = new User();
+        tasks1.setName("User 1");
+        listUsers.add(tasks1);
+
+        User tasks2 = new User();
+        tasks2.setName("User 2");
+        listUsers.add(tasks2);*/
+
+    }
+    private void getAllUsers() {
+
+
+        valueEventListenerGetUsers = firebaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot data: dataSnapshot.getChildren()){
+
+                    User users = data.getValue(User.class);
+                    listUsers.add(users);
+
+                }
+                adapterListContacts.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getAllUsers();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onStop() {
+        super.onStop();
+      firebaseRef.removeEventListener(valueEventListenerGetUsers);
+    }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 }

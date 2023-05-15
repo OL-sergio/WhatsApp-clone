@@ -34,4 +34,5 @@
     <string name="contacts">Contacts</string>
     <string name="nome_utilizador">Nome de Utilizador</string>
     <string name="text_information_config">Esse não é o seu nome de usuário nem sua senha. Esse nome ficará visível para seus contatos do WhatApp</string>
+    <string name="checkedtextview">CheckedTextView</string>
 </resources>

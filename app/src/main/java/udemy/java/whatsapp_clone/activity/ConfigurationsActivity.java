@@ -43,10 +43,11 @@ import java.io.IOException;
 import de.hdodenhof.circleimageview.CircleImageView;
 import udemy.java.whatsapp_clone.R;
 import udemy.java.whatsapp_clone.config.FirebaseConfiguration;
-import udemy.java.whatsapp_clone.databinding.ActivityConfigurationsBinding;
+
 import udemy.java.whatsapp_clone.helper.FirebaseUser;
 import udemy.java.whatsapp_clone.helper.Permission;
 import udemy.java.whatsapp_clone.model.User;
+import udemy.java.whatsapp_clone.databinding.ActivityConfigurationsBinding;
 
 public class ConfigurationsActivity extends AppCompatActivity {
 

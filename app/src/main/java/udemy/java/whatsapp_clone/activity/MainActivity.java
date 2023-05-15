@@ -3,7 +3,6 @@ package udemy.java.whatsapp_clone.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
@@ -15,7 +14,6 @@ import android.view.View;
 
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.ogaclejapan.smarttablayout.SmartTabIndicationInterpolator;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
