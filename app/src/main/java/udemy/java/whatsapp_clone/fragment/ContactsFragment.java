@@ -61,8 +61,6 @@ public class ContactsFragment extends Fragment {
 
         recyclerViewUsersContacts = binding.recyclerViewViewUsers;
 
-
-
         adapterListContacts = new AdapterContacts(listUsers, getActivity());
 
 
@@ -85,6 +83,7 @@ public class ContactsFragment extends Fragment {
     private void getAllUsers() {
 
         databaseReference = FirebaseConfiguration.getDatabaseReference().child("users");
+        currentUser = FirebaseUsers.getCurrentUser();
 
         valueEventListenerGetUsers = databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -92,10 +91,12 @@ public class ContactsFragment extends Fragment {
 
                 for (DataSnapshot data: dataSnapshot.getChildren()){
 
-
-
                     User users = data.getValue(User.class);
-                    listUsers.add(users);
+                    String currentUserEmail = currentUser.getEmail();
+
+                    if ( !currentUserEmail.equals( users.getEmail() ) ){
+                        listUsers.add( users );
+                    }
 
                 }
                 adapterListContacts.notifyDataSetChanged();
