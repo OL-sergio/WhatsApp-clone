@@ -1,10 +1,12 @@
 package udemy.java.whatsapp_clone.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -21,11 +23,13 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import udemy.java.whatsapp_clone.activity.ChatActivity;
 import udemy.java.whatsapp_clone.adapter.AdapterContacts;
 import udemy.java.whatsapp_clone.config.FirebaseConfiguration;
 
 import udemy.java.whatsapp_clone.databinding.FragmentContactsBinding;
 import udemy.java.whatsapp_clone.helper.FirebaseUsers;
+import udemy.java.whatsapp_clone.helper.RecyclerItemClickListener;
 import udemy.java.whatsapp_clone.model.User;
 
 public class ContactsFragment extends Fragment {
@@ -71,7 +75,37 @@ public class ContactsFragment extends Fragment {
         recyclerViewUsersContacts.addItemDecoration( new DividerItemDecoration(requireContext(), LinearLayout.VERTICAL ));
         recyclerViewUsersContacts.setAdapter(adapterListContacts);
 
-       /* User tasks1 = new User();
+        //Configuration of click events on the recyclerView.
+        recyclerViewUsersContacts.addOnItemTouchListener(
+                new RecyclerItemClickListener(
+                        getActivity(),
+                        recyclerViewUsersContacts,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+
+                                startActivity(new Intent(getActivity(), ChatActivity.class));
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+                                //startActivity(new Intent(getActivity(), ChatActivity.class));
+                            }
+
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+
+
+
+                            }
+                        }
+                )
+        );
+
+       /*
+       * User tasks1 = new User();
         tasks1.setName("User 1");
         listUsers.add(tasks1);
 
@@ -80,6 +114,7 @@ public class ContactsFragment extends Fragment {
         listUsers.add(tasks2);*/
 
     }
+
     private void getAllUsers() {
 
         databaseReference = FirebaseConfiguration.getDatabaseReference().child("users");
