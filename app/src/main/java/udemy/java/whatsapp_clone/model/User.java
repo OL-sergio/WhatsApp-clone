@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import udemy.java.whatsapp_clone.config.FirebaseConfiguration;
-import udemy.java.whatsapp_clone.helper.FirebaseUser;
+import udemy.java.whatsapp_clone.helper.FirebaseUsers;
 
 public class User {
 
@@ -31,7 +31,7 @@ public class User {
     }
 
     public void updateUser(){
-        String userID = FirebaseUser.getUserIdentification();
+        String userID = FirebaseUsers.getUserIdentification();
         DatabaseReference databaseReference = FirebaseConfiguration.getDatabaseReference();
 
         DatabaseReference userRef = databaseReference

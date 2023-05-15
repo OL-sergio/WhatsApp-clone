@@ -1,7 +1,7 @@
 package udemy.java.whatsapp_clone.activity;
 
 
-import static udemy.java.whatsapp_clone.helper.FirebaseUser.*;
+import static udemy.java.whatsapp_clone.helper.FirebaseUsers.*;
 
 import android.Manifest;
 import android.app.Activity;
@@ -34,6 +34,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -44,7 +45,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import udemy.java.whatsapp_clone.R;
 import udemy.java.whatsapp_clone.config.FirebaseConfiguration;
 
-import udemy.java.whatsapp_clone.helper.FirebaseUser;
+import udemy.java.whatsapp_clone.helper.FirebaseUsers;
 import udemy.java.whatsapp_clone.helper.Permission;
 import udemy.java.whatsapp_clone.model.User;
 import udemy.java.whatsapp_clone.databinding.ActivityConfigurationsBinding;
@@ -87,7 +88,7 @@ public class ConfigurationsActivity extends AppCompatActivity {
 
         storageReference = FirebaseConfiguration.getFirebaseStorage();
         userIdentification = getUserIdentification();
-        currentUser = FirebaseUser.getCurrentUserData();
+        currentUser = FirebaseUsers.getCurrentUserData();
 
 
         circleImageViewSetImage = binding.circleImageViewPhotoProfile;
@@ -102,7 +103,7 @@ public class ConfigurationsActivity extends AppCompatActivity {
         Permission.permissionValidation(permissionsNecessary, this, requestCode);
 
         //Recover data from user
-        com.google.firebase.auth.FirebaseUser user = getCurrentUser();
+        FirebaseUser user = getCurrentUser();
 
         Uri url = user.getPhotoUrl();
 
@@ -124,7 +125,7 @@ public class ConfigurationsActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 String username = userProfileName.getText().toString();
-                boolean returnData = FirebaseUser.updateUserName(username);
+                boolean returnData = FirebaseUsers.updateUserName(username);
                     if( returnData) {
 
                         currentUser.setName(username);

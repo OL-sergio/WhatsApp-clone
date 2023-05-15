@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.Objects;
@@ -16,7 +17,7 @@ import java.util.Objects;
 import udemy.java.whatsapp_clone.config.FirebaseConfiguration;
 import udemy.java.whatsapp_clone.model.User;
 
-public class FirebaseUser {
+public class FirebaseUsers {
 
     public static String getUserIdentification(){
 
@@ -28,7 +29,7 @@ public class FirebaseUser {
         return  userIdentification;
     }
 
-    public static com.google.firebase.auth.FirebaseUser getCurrentUser(){
+    public static FirebaseUser getCurrentUser(){
        FirebaseAuth userRef = FirebaseConfiguration.getUserAuthentication();
          return userRef.getCurrentUser();
 
@@ -36,7 +37,7 @@ public class FirebaseUser {
 
     public static boolean updateUserPhoto(Uri url){
         try {
-            com.google.firebase.auth.FirebaseUser user = getCurrentUser();
+            FirebaseUser user = getCurrentUser();
             UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder()
                     .setPhotoUri(url).build();
 
@@ -59,7 +60,7 @@ public class FirebaseUser {
 
     public static boolean updateUserName(String name){
         try {
-            com.google.firebase.auth.FirebaseUser user = getCurrentUser();
+            FirebaseUser user = getCurrentUser();
             UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder()
                     .setDisplayName(name).build();
 
@@ -80,7 +81,7 @@ public class FirebaseUser {
         }
     }
     public static User getCurrentUserData() {
-        com.google.firebase.auth.FirebaseUser firebaseUser = getCurrentUser();
+        FirebaseUser firebaseUser = getCurrentUser();
         User userdata = new User();
         userdata.setEmail(firebaseUser.getEmail() );
         userdata.setName(firebaseUser.getDisplayName() );

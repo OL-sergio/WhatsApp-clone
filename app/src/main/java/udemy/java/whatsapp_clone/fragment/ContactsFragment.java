@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,6 +25,7 @@ import udemy.java.whatsapp_clone.adapter.AdapterContacts;
 import udemy.java.whatsapp_clone.config.FirebaseConfiguration;
 
 import udemy.java.whatsapp_clone.databinding.FragmentContactsBinding;
+import udemy.java.whatsapp_clone.helper.FirebaseUsers;
 import udemy.java.whatsapp_clone.model.User;
 
 public class ContactsFragment extends Fragment {
@@ -32,7 +34,9 @@ public class ContactsFragment extends Fragment {
 
     private ArrayList<User> listUsers = new ArrayList<>();
 
-    private DatabaseReference firebaseRef = FirebaseConfiguration.getDatabaseReference();
+    private DatabaseReference databaseReference = FirebaseConfiguration.getDatabaseReference();
+
+    FirebaseUser currentUser = FirebaseUsers.getCurrentUser();
 
     private ValueEventListener valueEventListenerGetUsers;
 
@@ -57,7 +61,7 @@ public class ContactsFragment extends Fragment {
 
         recyclerViewUsersContacts = binding.recyclerViewViewUsers;
 
-        firebaseRef = FirebaseConfiguration.getDatabaseReference().child("users");
+
 
         adapterListContacts = new AdapterContacts(listUsers, getActivity());
 
@@ -80,12 +84,15 @@ public class ContactsFragment extends Fragment {
     }
     private void getAllUsers() {
 
+        databaseReference = FirebaseConfiguration.getDatabaseReference().child("users");
 
-        valueEventListenerGetUsers = firebaseRef.addValueEventListener(new ValueEventListener() {
+        valueEventListenerGetUsers = databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot data: dataSnapshot.getChildren()){
+
+
 
                     User users = data.getValue(User.class);
                     listUsers.add(users);
@@ -111,7 +118,7 @@ public class ContactsFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-      firebaseRef.removeEventListener(valueEventListenerGetUsers);
+      databaseReference.removeEventListener(valueEventListenerGetUsers);
     }
 
     @Override
