@@ -10,6 +10,8 @@
     <include
         android:id="@+id/include"
         layout="@layout/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -18,30 +20,32 @@
         android:id="@+id/circleImage_viewPhotoProfile"
         android:layout_width="250dp"
         android:layout_height="250dp"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         app:civ_border_color="@color/borderImage"
         app:civ_border_width="2dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
-        android:background="@color/white"
+        android:background="@drawable/dw_round_rectangle"
         android:paddingStart="16dp"
         android:paddingTop="5dp"
         android:paddingEnd="16dp"
         android:paddingBottom="5dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/textView_information"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/circleImage_viewPhotoProfile">
 
@@ -89,20 +93,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageButton_ImageInsertGallery"
         app:layout_constraintTop_toTopOf="@+id/circleImage_viewPhotoProfile"
-        app:layout_constraintVertical_bias="0.96" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <ImageButton
         android:id="@+id/imageButton_ImageInsertGallery"
         android:layout_width="58dp"
         android:layout_height="48dp"
         android:background="#E7E6E6"
-        android:src="@drawable/ic_insert_photo"
         android:importantForAccessibility="no"
+        android:src="@drawable/ic_insert_photo"
         app:layout_constraintBottom_toBottomOf="@+id/circleImage_viewPhotoProfile"
         app:layout_constraintEnd_toStartOf="@+id/imageButton_ImagePhoto"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/circleImage_viewPhotoProfile"
-        app:layout_constraintVertical_bias="0.96" />
+        app:layout_constraintVertical_bias="1.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
