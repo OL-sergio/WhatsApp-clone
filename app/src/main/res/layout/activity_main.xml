@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/bg_chat"
     tools:context=".activity.MainActivity">
 
     <include layout="@layout/toolbar" />
@@ -38,13 +39,15 @@
         app:stl_clickable="true"
         app:stl_titleOffset="24dp"
         app:stl_drawDecorationAfterTab="false"
+        android:importantForAccessibility="no"
         />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:importantForAccessibility="no"
         android:layout_below="@id/viewPagerTab"
-        />
+        tools:ignore="ObsoleteLayoutParam" />
 
 </LinearLayout>

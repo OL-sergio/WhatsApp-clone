@@ -124,6 +124,7 @@ public class ContactsFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+                listUsers.clear();
                 for (DataSnapshot data: dataSnapshot.getChildren()){
 
                     User users = data.getValue(User.class);

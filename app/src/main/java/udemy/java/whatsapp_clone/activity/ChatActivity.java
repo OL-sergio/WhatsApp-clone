@@ -28,20 +28,12 @@ public class ChatActivity extends AppCompatActivity {
 
 
         Toolbar toolbarMain  =  findViewById(R.id.toolbarMain);
-        toolbarMain.setTitle("Chat");
+        toolbarMain.setTitle("");
         setSupportActionBar(toolbarMain);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAnchorView(R.id.fab)
-                        .setAction("Action", null).show();
-            }
-        });
     }
 
 }
