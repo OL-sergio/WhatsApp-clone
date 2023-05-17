@@ -3,13 +3,14 @@ package udemy.java.whatsapp_clone.model;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 import udemy.java.whatsapp_clone.config.FirebaseConfiguration;
 import udemy.java.whatsapp_clone.helper.FirebaseUsers;
 
-public class User {
+public class User implements Serializable {
 
     private String UID;
     private String name;

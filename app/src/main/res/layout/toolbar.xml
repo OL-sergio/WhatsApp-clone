@@ -23,14 +23,14 @@
 
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/circleImage_chatToolbarProfileImage"
+                android:id="@+id/circleImage_ToolbarProfileImage"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:padding="6dp"
                 android:src="@drawable/padrao" />
 
             <TextView
-                android:id="@+id/textView_chatToolbarUserName"
+                android:id="@+id/textView_ToolbarUserName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

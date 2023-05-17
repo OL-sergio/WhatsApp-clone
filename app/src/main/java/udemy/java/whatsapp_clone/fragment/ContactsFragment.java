@@ -27,6 +27,7 @@ import udemy.java.whatsapp_clone.activity.ChatActivity;
 import udemy.java.whatsapp_clone.adapter.AdapterContacts;
 import udemy.java.whatsapp_clone.config.FirebaseConfiguration;
 
+
 import udemy.java.whatsapp_clone.databinding.FragmentContactsBinding;
 import udemy.java.whatsapp_clone.helper.FirebaseUsers;
 import udemy.java.whatsapp_clone.helper.RecyclerItemClickListener;
@@ -40,14 +41,11 @@ public class ContactsFragment extends Fragment {
 
     private DatabaseReference databaseReference = FirebaseConfiguration.getDatabaseReference();
 
-    FirebaseUser currentUser = FirebaseUsers.getCurrentUser();
-
     private ValueEventListener valueEventListenerGetUsers;
 
-
+    private FirebaseUser currentUser;
     private RecyclerView recyclerViewUsersContacts;
     private AdapterContacts adapterListContacts;
-
 
     @Override
     public View onCreateView(
@@ -67,12 +65,11 @@ public class ContactsFragment extends Fragment {
 
         adapterListContacts = new AdapterContacts(listUsers, getActivity());
 
-
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
 
         recyclerViewUsersContacts.setLayoutManager(layoutManager);
         recyclerViewUsersContacts.setHasFixedSize(true);
-        recyclerViewUsersContacts.addItemDecoration( new DividerItemDecoration(requireContext(), LinearLayout.VERTICAL ));
+        //recyclerViewUsersContacts.addItemDecoration( new DividerItemDecoration(requireContext(), LinearLayout.VERTICAL ));
         recyclerViewUsersContacts.setAdapter(adapterListContacts);
 
         //Configuration of click events on the recyclerView.
@@ -83,8 +80,13 @@ public class ContactsFragment extends Fragment {
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
+                                //startActivity(new Intent(getActivity(), ChatActivity.class));
 
-                                startActivity(new Intent(getActivity(), ChatActivity.class));
+                                User userSelected = listUsers.get(position);
+
+                                Intent intent = new Intent (getActivity(), ChatActivity.class);
+                                intent.putExtra("selectedContact", userSelected);
+                                startActivity(intent);
                             }
 
                             @Override
