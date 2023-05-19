@@ -1,8 +1,8 @@
 package udemy.java.whatsapp_clone.helper;
 
-import java.nio.charset.StandardCharsets;
-
 import android.util.Base64;
+
+import udemy.java.whatsapp_clone.model.User;
 
 public class Base64Custom {
     

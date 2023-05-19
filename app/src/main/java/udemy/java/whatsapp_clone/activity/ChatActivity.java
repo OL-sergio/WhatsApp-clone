@@ -4,20 +4,27 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
-import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DatabaseReference;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import udemy.java.whatsapp_clone.config.FirebaseConfiguration;
 import udemy.java.whatsapp_clone.databinding.ActivityChatBinding;
 
 import udemy.java.whatsapp_clone.R;
+import udemy.java.whatsapp_clone.helper.Base64Custom;
+import udemy.java.whatsapp_clone.helper.FirebaseUsers;
+import udemy.java.whatsapp_clone.model.Message;
 import udemy.java.whatsapp_clone.model.User;
 
 public class ChatActivity extends AppCompatActivity {
@@ -26,7 +33,14 @@ public class ChatActivity extends AppCompatActivity {
 
     private TextView chatUsername;
     private CircleImageView circleImageViewUserPhoto;
+    private EditText editTextMessage;
+    private ImageView selectPhoto;
+    private ImageButton sendMessages;
+
     private User userReceived;
+
+    private String idUserReceiver;
+    private String idUserSender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +58,12 @@ public class ChatActivity extends AppCompatActivity {
 
         chatUsername = binding.textViewChatToolbarUserName;
         circleImageViewUserPhoto = binding.circleImageChatToolbarProfileImage;
+        editTextMessage = binding.editTextChatMessaging;
+        selectPhoto = binding.imageViewOpenCamara;
+        sendMessages = binding.imageButtonSendMessage;
 
+        //Retrieve user data of current user
+        idUserSender = FirebaseUsers.getUserIdentification() ;
 
         //Retrieving data from intent
         Bundle bundle = getIntent().getExtras();
@@ -64,6 +83,52 @@ public class ChatActivity extends AppCompatActivity {
             } else {
                 circleImageViewUserPhoto.setImageResource(R.drawable.padrao);
             }
+
+            // Retrieve data from receiver user
+            idUserReceiver = Base64Custom.encryptionBase64( userReceived.getEmail() );
+
+         }
+
+       sendMessages.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               sendMessages();
+           }
+       });
+
+    }
+
+    private void sendMessages() {
+
+        String textMessage = editTextMessage.getText().toString();
+
+
+        if (!textMessage.isEmpty()) {
+
+            Message message = new Message();
+            message.setIdUser( idUserSender );
+            message.setMessage(textMessage);
+
+            saveMessage(idUserSender, idUserReceiver, message);
+
+
+        }else {
+            Toast.makeText(this, "Escreva mensagen para enviar", Toast.LENGTH_SHORT).show();
         }
+
+    }
+
+    private void saveMessage(String idSender , String idUserReceiver, Message message ) {
+
+        DatabaseReference databaseReference = FirebaseConfiguration.getDatabaseReference();
+        DatabaseReference messagesRef = databaseReference.child("mensagens");
+
+        messagesRef.child(idUserSender)
+                .child(idUserReceiver)
+                .push()
+                .setValue(message);
+
+        editTextMessage.setText("");
+
     }
 }
