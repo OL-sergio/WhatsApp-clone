@@ -8,6 +8,8 @@ import com.google.firebase.database.DatabaseReference;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.View;
 import android.widget.EditText;
@@ -17,7 +19,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.hdodenhof.circleimageview.CircleImageView;
+import udemy.java.whatsapp_clone.adapter.AdapterMessages;
 import udemy.java.whatsapp_clone.config.FirebaseConfiguration;
 import udemy.java.whatsapp_clone.databinding.ActivityChatBinding;
 
@@ -42,6 +48,10 @@ public class ChatActivity extends AppCompatActivity {
     private String idUserReceiver;
     private String idUserSender;
 
+    private RecyclerView recyclerViewMessages;
+    private AdapterMessages adapterMessages;
+    private List<Message> messages = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +71,7 @@ public class ChatActivity extends AppCompatActivity {
         editTextMessage = binding.editTextChatMessaging;
         selectPhoto = binding.imageViewOpenCamara;
         sendMessages = binding.imageButtonSendMessage;
+        recyclerViewMessages = binding.recyclerViewViewMessages;
 
         //Retrieve user data of current user
         idUserSender = FirebaseUsers.getUserIdentification() ;
@@ -88,6 +99,13 @@ public class ChatActivity extends AppCompatActivity {
             idUserReceiver = Base64Custom.encryptionBase64( userReceived.getEmail() );
 
          }
+
+        adapterMessages = new AdapterMessages(messages, getApplicationContext());
+
+        RecyclerView .LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerViewMessages.setLayoutManager( layoutManager);
+        recyclerViewMessages.setHasFixedSize(true);
+        recyclerViewMessages.setAdapter(adapterMessages);
 
        sendMessages.setOnClickListener(new View.OnClickListener() {
            @Override
