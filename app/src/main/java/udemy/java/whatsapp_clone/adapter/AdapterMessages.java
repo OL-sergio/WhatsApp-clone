@@ -56,12 +56,12 @@ public class AdapterMessages extends RecyclerView.Adapter<AdapterMessages.MyView
 
          viewItem = LayoutInflater.from(
                     parent.getContext())
-                    .inflate( R.layout.row_view_chat_messages_sender, parent, false);
+                    .inflate( R.layout.row_view_chat_messages_receiver, parent, false);
 
         }else if (viewType== TYPE_RECEIVER){
            viewItem = LayoutInflater.from(
                     parent.getContext())
-                    .inflate( R.layout.row_view_chat_messages_receiver, parent, false);
+                    .inflate( R.layout.row_view_chat_messages_sender, parent, false);
         }
 
         return new MyViewHolder(viewItem);
@@ -88,7 +88,7 @@ public class AdapterMessages extends RecyclerView.Adapter<AdapterMessages.MyView
     @Override
     public int getItemCount() {
 
-        return 0;
+        return messagesList.size();
     }
 
     @Override

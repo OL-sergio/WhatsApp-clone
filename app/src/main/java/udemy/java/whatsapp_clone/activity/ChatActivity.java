@@ -4,8 +4,13 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -50,10 +55,11 @@ public class ChatActivity extends AppCompatActivity {
 
     private DatabaseReference databaseReference;
     private DatabaseReference messagesRef;
+    private ChildEventListener childEventListenerMessages;
 
     private RecyclerView recyclerViewMessages;
     private AdapterMessages adapterMessages;
-    private List<Message> messages = new ArrayList<>();
+    private List<Message> messagesList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,12 +110,17 @@ public class ChatActivity extends AppCompatActivity {
 
          }
 
-        adapterMessages = new AdapterMessages(messages, getApplicationContext());
+        adapterMessages = new AdapterMessages(messagesList, getApplicationContext());
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerViewMessages.setLayoutManager( layoutManager);
         recyclerViewMessages.setHasFixedSize(true);
         recyclerViewMessages.setAdapter(adapterMessages);
+
+        databaseReference = FirebaseConfiguration.getDatabaseReference();
+        messagesRef = databaseReference.child("messages")
+                .child(idUserSender)
+                .child(idUserReceiver);
 
            sendMessages.setOnClickListener(new View.OnClickListener() {
                @Override
@@ -118,16 +129,42 @@ public class ChatActivity extends AppCompatActivity {
                }
            });
 
-        getUsersMessages();
+
 
     }
 
     private void getUsersMessages() {
 
-        databaseReference = FirebaseConfiguration.getDatabaseReference();
-        messagesRef = databaseReference.child("messages")
-                .child(idUserReceiver)
-                .child(idUserSender);
+       childEventListenerMessages = messagesRef.addChildEventListener(new ChildEventListener() {
+           @Override
+           public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+               Message message = snapshot.getValue(Message.class);
+               messagesList.add(message);
+               adapterMessages.notifyDataSetChanged();
+           }
+
+           @Override
+           public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+           }
+
+           @Override
+           public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+           }
+
+           @Override
+           public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+           }
+
+           @Override
+           public void onCancelled(@NonNull DatabaseError error) {
+
+           }
+       });
+
+
     }
 
     private void sendMessages() {
@@ -166,11 +203,14 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
+        getUsersMessages();
         super.onStart();
     }
 
     @Override
     protected void onStop() {
+
+        messagesRef.removeEventListener(childEventListenerMessages);
         super.onStop();
     }
 
