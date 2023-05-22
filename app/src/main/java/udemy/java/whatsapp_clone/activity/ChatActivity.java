@@ -48,6 +48,9 @@ public class ChatActivity extends AppCompatActivity {
     private String idUserReceiver;
     private String idUserSender;
 
+    private DatabaseReference databaseReference;
+    private DatabaseReference messagesRef;
+
     private RecyclerView recyclerViewMessages;
     private AdapterMessages adapterMessages;
     private List<Message> messages = new ArrayList<>();
@@ -71,6 +74,7 @@ public class ChatActivity extends AppCompatActivity {
         editTextMessage = binding.editTextChatMessaging;
         selectPhoto = binding.imageViewOpenCamara;
         sendMessages = binding.imageButtonSendMessage;
+
         recyclerViewMessages = binding.recyclerViewViewMessages;
 
         //Retrieve user data of current user
@@ -102,18 +106,28 @@ public class ChatActivity extends AppCompatActivity {
 
         adapterMessages = new AdapterMessages(messages, getApplicationContext());
 
-        RecyclerView .LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerViewMessages.setLayoutManager( layoutManager);
         recyclerViewMessages.setHasFixedSize(true);
         recyclerViewMessages.setAdapter(adapterMessages);
 
-       sendMessages.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               sendMessages();
-           }
-       });
+           sendMessages.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   sendMessages();
+               }
+           });
 
+        getUsersMessages();
+
+    }
+
+    private void getUsersMessages() {
+
+        databaseReference = FirebaseConfiguration.getDatabaseReference();
+        messagesRef = databaseReference.child("messages")
+                .child(idUserReceiver)
+                .child(idUserSender);
     }
 
     private void sendMessages() {
@@ -139,7 +153,7 @@ public class ChatActivity extends AppCompatActivity {
     private void saveMessage(String idSender , String idUserReceiver, Message message ) {
 
         DatabaseReference databaseReference = FirebaseConfiguration.getDatabaseReference();
-        DatabaseReference messagesRef = databaseReference.child("mensagens");
+        messagesRef = databaseReference.child("messages");
 
         messagesRef.child(idUserSender)
                 .child(idUserReceiver)
@@ -148,5 +162,21 @@ public class ChatActivity extends AppCompatActivity {
 
         editTextMessage.setText("");
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 }
