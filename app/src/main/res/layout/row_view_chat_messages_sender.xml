@@ -4,20 +4,23 @@
     android:layout_width="wrap_content"
     android:paddingBottom="6dp"
     android:paddingTop="6dp"
-    android:paddingStart="6dp"
+    android:paddingEnd="6dp"
     >
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/dw_bg_messages_receiver"
-        android:layout_alignParentStart="true"
+        android:background="@drawable/dw_bg_messages_sender"
+        android:layout_alignParentEnd="true"
         >
+
         <TextView
             android:id="@+id/textView_chatMessage"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
+            android:textSize="18dp"
             android:text="testing" />
 
         <ImageView
@@ -28,4 +31,5 @@
             android:src="@drawable/padrao"/>
 
     </LinearLayout>
+
 </RelativeLayout>

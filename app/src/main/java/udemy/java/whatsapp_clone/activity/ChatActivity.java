@@ -30,9 +30,10 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import udemy.java.whatsapp_clone.adapter.AdapterMessages;
 import udemy.java.whatsapp_clone.config.FirebaseConfiguration;
-import udemy.java.whatsapp_clone.databinding.ActivityChatBinding;
+
 
 import udemy.java.whatsapp_clone.R;
+import udemy.java.whatsapp_clone.databinding.ActivityChatBinding;
 import udemy.java.whatsapp_clone.helper.Base64Custom;
 import udemy.java.whatsapp_clone.helper.FirebaseUsers;
 import udemy.java.whatsapp_clone.model.Message;
@@ -128,9 +129,6 @@ public class ChatActivity extends AppCompatActivity {
                    sendMessages();
                }
            });
-
-
-
     }
 
     private void getUsersMessages() {
@@ -138,9 +136,11 @@ public class ChatActivity extends AppCompatActivity {
        childEventListenerMessages = messagesRef.addChildEventListener(new ChildEventListener() {
            @Override
            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
                Message message = snapshot.getValue(Message.class);
-               messagesList.add(message);
+               messagesList.add( message );
                adapterMessages.notifyDataSetChanged();
+
            }
 
            @Override
@@ -180,6 +180,8 @@ public class ChatActivity extends AppCompatActivity {
 
             saveMessage(idUserSender, idUserReceiver, message);
 
+            saveMessage(idUserReceiver, idUserSender, message);
+
 
         }else {
             Toast.makeText(this, "Escreva mensagen para enviar", Toast.LENGTH_SHORT).show();
@@ -192,7 +194,7 @@ public class ChatActivity extends AppCompatActivity {
         DatabaseReference databaseReference = FirebaseConfiguration.getDatabaseReference();
         messagesRef = databaseReference.child("messages");
 
-        messagesRef.child(idUserSender)
+        messagesRef.child(idSender)
                 .child(idUserReceiver)
                 .push()
                 .setValue(message);

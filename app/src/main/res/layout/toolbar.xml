@@ -21,21 +21,13 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/circleImage_ToolbarProfileImage"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:padding="6dp"
-                android:src="@drawable/padrao" />
-
             <TextView
                 android:id="@+id/textView_ToolbarUserName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:paddingStart="12dp"
-                android:text="teste_perposes"
+                android:text="WhatsApp"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 tools:ignore="RtlSymmetry" />

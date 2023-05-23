@@ -26,8 +26,9 @@ public class AdapterMessages extends RecyclerView.Adapter<AdapterMessages.MyView
     private List<Message> messagesList;
     private Context context;
 
-    private static final int TYPE_RECEIVER  = 0;
-    private static final int TYPE_SENDER    = 1;
+    private static final int TYPE_SENDER    = 0;
+    private static final int TYPE_RECEIVER  = 1;
+
 
     public AdapterMessages( List<Message> messageList, Context context ) {
         this.messagesList = messageList;
@@ -56,12 +57,12 @@ public class AdapterMessages extends RecyclerView.Adapter<AdapterMessages.MyView
 
          viewItem = LayoutInflater.from(
                     parent.getContext())
-                    .inflate( R.layout.row_view_chat_messages_receiver, parent, false);
+                    .inflate( R.layout.row_view_chat_messages_sender, parent, false);
 
         }else if (viewType== TYPE_RECEIVER){
            viewItem = LayoutInflater.from(
                     parent.getContext())
-                    .inflate( R.layout.row_view_chat_messages_sender, parent, false);
+                    .inflate( R.layout.row_view_chat_messages_receiver, parent, false);
         }
 
         return new MyViewHolder(viewItem);
