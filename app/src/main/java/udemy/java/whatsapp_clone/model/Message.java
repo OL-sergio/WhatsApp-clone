@@ -6,6 +6,9 @@ public class Message {
     private String image;
     private String message;
 
+    public Message (){
+    }
+
     public String getIdUser() {
         return idUser;
     }

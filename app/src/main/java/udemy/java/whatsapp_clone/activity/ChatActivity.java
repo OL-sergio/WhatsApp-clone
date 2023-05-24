@@ -183,7 +183,7 @@ public class ChatActivity extends AppCompatActivity {
                         if (image != null){
 
 
-                            saveImageOnFirebase();
+                           saveImageOnFirebase();
 
                         }
                     }
@@ -245,11 +245,13 @@ public class ChatActivity extends AppCompatActivity {
 
     private void getUsersMessages() {
 
+        messagesList.clear();
+
        childEventListenerMessages = messagesRef.addChildEventListener(new ChildEventListener() {
            @Override
            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-               messagesList.clear();
+
                Message message = snapshot.getValue(Message.class);
                messagesList.add( message );
                adapterMessages.notifyDataSetChanged();
@@ -283,8 +285,6 @@ public class ChatActivity extends AppCompatActivity {
     private void sendMessages() {
 
         String textMessage = editTextMessage.getText().toString();
-
-
 
         if (!textMessage.isEmpty()) {
 

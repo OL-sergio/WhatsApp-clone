@@ -78,10 +78,14 @@ public class AdapterMessages extends RecyclerView.Adapter<AdapterMessages.MyView
 
 
         if ( msgImage != null ){
+
             Uri url = Uri.parse(msgImage);
             Glide.with(context).load(url).into(holder.images);
+
         }else {
+
             holder.messages.setText(msgText);
+
         }
 
     }
@@ -96,11 +100,12 @@ public class AdapterMessages extends RecyclerView.Adapter<AdapterMessages.MyView
     public int getItemViewType(int position) {
 
         Message message = messagesList.get(position);
-
         String idUser = FirebaseUsers.getUserIdentification();
 
         if ( idUser.equals( message.getIdUser() ) ){
+
             return TYPE_SENDER;
+
         }
         return TYPE_RECEIVER;
     }
