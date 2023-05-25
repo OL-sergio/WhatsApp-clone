@@ -82,10 +82,13 @@ public class AdapterMessages extends RecyclerView.Adapter<AdapterMessages.MyView
             Uri url = Uri.parse(msgImage);
             Glide.with(context).load(url).into(holder.images);
 
+            holder.messages.setVisibility(View.GONE);
+
         }else {
 
             holder.messages.setText(msgText);
 
+            holder.images.setVisibility(View.GONE);
         }
 
     }

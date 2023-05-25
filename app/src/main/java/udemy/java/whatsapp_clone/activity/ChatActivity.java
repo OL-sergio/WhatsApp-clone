@@ -1,13 +1,30 @@
 package udemy.java.whatsapp_clone.activity;
 
 import static udemy.java.whatsapp_clone.helper.FirebaseUsers.getUserIdentification;
-import static udemy.java.whatsapp_clone.helper.FirebaseUsers.updateUserPhoto;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,40 +38,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.provider.MediaStore;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import udemy.java.whatsapp_clone.R;
 import udemy.java.whatsapp_clone.adapter.AdapterMessages;
 import udemy.java.whatsapp_clone.config.FirebaseConfiguration;
-
-
-import udemy.java.whatsapp_clone.R;
 import udemy.java.whatsapp_clone.databinding.ActivityChatBinding;
 import udemy.java.whatsapp_clone.helper.Base64Custom;
 import udemy.java.whatsapp_clone.helper.FirebaseUsers;
+import udemy.java.whatsapp_clone.model.Conversations;
 import udemy.java.whatsapp_clone.model.Message;
 import udemy.java.whatsapp_clone.model.User;
 
@@ -233,6 +229,8 @@ public class ChatActivity extends AppCompatActivity {
 
                         saveMessage(idUserReceiver, idUserSender, message);
 
+                        Toast.makeText(ChatActivity.this, "Sucesso a realizar enviar da imagem", Toast.LENGTH_SHORT).show();
+
                     }
                 });
 
@@ -296,10 +294,23 @@ public class ChatActivity extends AppCompatActivity {
 
             saveMessage(idUserReceiver, idUserSender, message);
 
+            saveConversations(message);
 
         }else {
             Toast.makeText(this, "Escreva uma mensagen para enviar", Toast.LENGTH_SHORT).show();
         }
+
+    }
+
+    private void saveConversations( Message message ) {
+
+        Conversations conversationsSender = new Conversations();
+        conversationsSender.setIdSender( idUserSender );
+        conversationsSender.setIdReceiver( idUserReceiver );
+        conversationsSender.setLastUseMessage(message.getMessage());
+        conversationsSender.setUserExhibition( userReceived );
+
+        conversationsSender.saveConversation();
 
     }
 
