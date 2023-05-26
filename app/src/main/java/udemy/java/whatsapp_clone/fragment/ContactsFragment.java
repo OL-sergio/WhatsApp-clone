@@ -7,11 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,8 +24,6 @@ import java.util.ArrayList;
 import udemy.java.whatsapp_clone.activity.ChatActivity;
 import udemy.java.whatsapp_clone.adapter.AdapterContacts;
 import udemy.java.whatsapp_clone.config.FirebaseConfiguration;
-
-
 import udemy.java.whatsapp_clone.databinding.FragmentContactsBinding;
 import udemy.java.whatsapp_clone.helper.FirebaseUsers;
 import udemy.java.whatsapp_clone.helper.RecyclerItemClickListener;
@@ -40,10 +36,10 @@ public class ContactsFragment extends Fragment {
     private ArrayList<User> listUsers = new ArrayList<>();
 
     private DatabaseReference databaseReference = FirebaseConfiguration.getDatabaseReference();
-
+    private FirebaseUser currentUser;
     private ValueEventListener valueEventListenerGetUsers;
 
-    private FirebaseUser currentUser;
+
     private RecyclerView recyclerViewUsersContacts;
     private AdapterContacts adapterListContacts;
 

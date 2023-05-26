@@ -78,7 +78,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private RecyclerView recyclerViewMessages;
     private AdapterMessages adapterMessages;
-    private List<Message> messagesList = new ArrayList<>();
+    private final List<Message> messagesList = new ArrayList<>();
 
     Bitmap image = null;
 

@@ -16,30 +16,34 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import udemy.java.whatsapp_clone.R;
+import udemy.java.whatsapp_clone.model.Conversations;
 import udemy.java.whatsapp_clone.model.User;
 
-public class AdapterContacts extends RecyclerView.Adapter<AdapterContacts.MyViewHolder> {
 
-    private List<User> usersList;
+public class AdapterConversations extends RecyclerView.Adapter<AdapterConversations.MyViewHolder> {
+
+    private List<Conversations> conversationsList;
     private Context context;
 
-
-    public AdapterContacts (List<User> usersList, Context context){
-        this.usersList = usersList;
+    public AdapterConversations (List<Conversations> conversationsList, Context context){
+        this.conversationsList = conversationsList;
         this.context = context;
+
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView textViewName, textViewEmail;
+        TextView textViewName, textViewLastMessage;
         CircleImageView circleImageViewProfile;
+
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            this.textViewName = itemView.findViewById(R.id.textView_rowViewName);
-            this.textViewEmail = itemView.findViewById(R.id.textView_rowViewEmail);
-            this.circleImageViewProfile = itemView.findViewById(R.id.circleImage_rowViewUsers);
+            this.textViewName = itemView.findViewById(R.id.textView_rowViewConversationsName);
+            this.textViewLastMessage = itemView.findViewById(R.id.textView_rowViewConversationsLastMessage);
+            this.circleImageViewProfile = itemView.findViewById(R.id.circleImage_rowViewConversationsUsers);
+
         }
     }
 
@@ -48,7 +52,7 @@ public class AdapterContacts extends RecyclerView.Adapter<AdapterContacts.MyView
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View itemList = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.row_view_users, parent, false);
+                .inflate(R.layout.row_view_conversations, parent, false);
 
         return new MyViewHolder(itemList);
     }
@@ -56,28 +60,30 @@ public class AdapterContacts extends RecyclerView.Adapter<AdapterContacts.MyView
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-        User users = usersList.get(position);
+        Conversations conversations = conversationsList.get(position);
+        holder.textViewLastMessage.setText(conversations.getLastUseMessage());
 
-        holder.textViewName.setText(users.getName());
-        holder.textViewEmail.setText(users.getEmail());
+        User user = conversations.getUserExhibition();
+        holder.textViewName.setText(user.getName());
 
+        if ( user.getPhoto() != null ) {
 
-        if (users.getPhoto() != null){
-            Uri uri = Uri.parse(users.getPhoto());
+            Uri uri = Uri.parse(user.getPhoto());
             Glide.with(context)
-                    //.asBitmap()
                     .load(uri)
                     .into(holder.circleImageViewProfile);
 
-        }else  {
+        } else {
             holder.circleImageViewProfile.setImageResource(R.drawable.padrao);
+
         }
 
     }
 
     @Override
     public int getItemCount() {
-        return usersList.size();
+        return conversationsList.size();
     }
+
 
 }
