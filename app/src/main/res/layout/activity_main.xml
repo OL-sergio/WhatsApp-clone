@@ -8,7 +8,9 @@
     android:background="@drawable/bg_chat"
     tools:context=".activity.MainActivity">
 
-    <include layout="@layout/toolbar" />
+    <include
+        android:id="@+id/search_toolBar"
+        layout="@layout/toolbar" />
 
     <com.ogaclejapan.smarttablayout.SmartTabLayout
         android:id="@+id/viewPagerTab"

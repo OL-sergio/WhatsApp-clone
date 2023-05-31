@@ -108,6 +108,7 @@ public class ConversationsFragment extends Fragment {
 
     private void getUsersConversations() {
 
+        listConversations.clear();
         childEventListenerConversationsUsers = conversationsRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -137,9 +138,12 @@ public class ConversationsFragment extends Fragment {
 
             }
         });
-
-
     }
+
+    public void searChConversations(String text){
+        //Log.d("event", text);
+    }
+
     @Override
     public void onStart() {
         super.onStart();
