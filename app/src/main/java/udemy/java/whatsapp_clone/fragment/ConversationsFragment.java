@@ -1,9 +1,11 @@
 package udemy.java.whatsapp_clone.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,10 +20,12 @@ import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 
+import udemy.java.whatsapp_clone.activity.ChatActivity;
 import udemy.java.whatsapp_clone.adapter.AdapterConversations;
 import udemy.java.whatsapp_clone.config.FirebaseConfiguration;
 import udemy.java.whatsapp_clone.databinding.FragmentConversationsBinding;
 import udemy.java.whatsapp_clone.helper.FirebaseUsers;
+import udemy.java.whatsapp_clone.helper.RecyclerItemClickListener;
 import udemy.java.whatsapp_clone.model.Conversations;
 
 
@@ -67,6 +71,33 @@ public class ConversationsFragment extends Fragment {
         recyclerViewViewConversations.setLayoutManager(layoutManager);
         recyclerViewViewConversations.setHasFixedSize(true);
         recyclerViewViewConversations.setAdapter(adapterListConversations);
+
+        recyclerViewViewConversations.addOnItemTouchListener(new RecyclerItemClickListener(
+                getActivity(),
+                recyclerViewViewConversations,
+                new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+
+                        Conversations conversationsSelected = listConversations.get(position);
+
+                        Intent intent = new Intent (getActivity(), ChatActivity.class);
+                        intent.putExtra("selectedContact", conversationsSelected.getUserExhibition());
+                        startActivity(intent);
+
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+
+                    }
+
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    }
+                }
+        ));
 
         String userIdentification = FirebaseUsers.getUserIdentification();
         conversationsRef = databaseReference.child("conversations")
