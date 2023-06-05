@@ -60,11 +60,29 @@ public class MainActivity extends AppCompatActivity {
         SmartTabLayout viewPagerTab = findViewById(R.id.viewPagerTab);
         viewPagerTab.setViewPager(viewPager);
 
-        searchView = binding.searchToolBar.searchViewChatUsers;
+        searchView = binding.searchToolbar.searchViewChatUsers;
+
+        //Listener for seatView
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+
+            @Override
+            public void onSearchViewShown() {
+               // Log.d("event","onSearchViewShown");
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+               // Log.d("event","onSearchViewClosed");
+                ConversationsFragment fragment = (ConversationsFragment) adapter.getPage(0);
+                fragment.reLoadMessages();
+            }
+        });
+
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 //Log.d("event","onQueryTextSubmit");
+
                 return false;
             }
 
@@ -74,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                 ConversationsFragment fragment = (ConversationsFragment) adapter.getPage(0);
 
                 if (newText != null && !newText.isEmpty() ) {
-                    fragment.searChConversations(newText);
+                    fragment.searChConversations( newText.toLowerCase() );
                 }
 
                 return false;

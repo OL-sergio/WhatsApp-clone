@@ -6,18 +6,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/circleImage_rowViewUsers"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
-            app:civ_border_color="@color/borderImage"
-            app:civ_border_width="2dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleImage_rowViewUsers"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:civ_border_color="@color/borderImage"
+        app:civ_border_width="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
         <CheckedTextView
             android:id="@+id/textView_rowViewName"
@@ -51,7 +51,7 @@
         layout="@layout/divisor"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginStart="100dp"
+        android:layout_marginStart="85dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

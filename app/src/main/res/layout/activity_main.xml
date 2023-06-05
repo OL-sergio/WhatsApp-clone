@@ -9,7 +9,7 @@
     tools:context=".activity.MainActivity">
 
     <include
-        android:id="@+id/search_toolBar"
+        android:id="@+id/search_toolbar"
         layout="@layout/toolbar" />
 
     <com.ogaclejapan.smarttablayout.SmartTabLayout

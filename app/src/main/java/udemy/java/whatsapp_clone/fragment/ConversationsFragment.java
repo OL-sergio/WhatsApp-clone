@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import udemy.java.whatsapp_clone.activity.ChatActivity;
 import udemy.java.whatsapp_clone.adapter.AdapterConversations;
@@ -142,11 +143,40 @@ public class ConversationsFragment extends Fragment {
 
     public void searChConversations(String text){
         //Log.d("event", text);
+
+        List<Conversations> searchForConversations = new ArrayList<>();
+
+        for ( Conversations conversations : listConversations ) {
+
+            String name = conversations.getUserExhibition().getName().toLowerCase();
+            String lastMessage = conversations.getLastUseMessage().toLowerCase();
+
+            if (name.contains( text ) || lastMessage.contains( text ) ){
+                searchForConversations.add(conversations);
+
+            }
+        }
+
+        adapterListConversations = new AdapterConversations(searchForConversations, getActivity());
+        recyclerViewViewConversations.setAdapter(adapterListConversations);
+        adapterListConversations.notifyDataSetChanged();
+
     }
+
+    public void reLoadMessages(){
+
+        adapterListConversations = new AdapterConversations(listConversations, getActivity());
+        recyclerViewViewConversations.setAdapter(adapterListConversations);
+        adapterListConversations.notifyDataSetChanged();
+
+    }
+
+
 
     @Override
     public void onStart() {
         super.onStart();
+        reLoadMessages();
         getUsersConversations();
     }
 
