@@ -22,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import udemy.java.whatsapp_clone.activity.ChatActivity;
+import udemy.java.whatsapp_clone.activity.GroupActivity;
 import udemy.java.whatsapp_clone.adapter.AdapterContacts;
 import udemy.java.whatsapp_clone.config.FirebaseConfiguration;
 import udemy.java.whatsapp_clone.databinding.FragmentContactsBinding;
@@ -38,7 +39,6 @@ public class ContactsFragment extends Fragment {
     private DatabaseReference databaseReference = FirebaseConfiguration.getDatabaseReference();
     private FirebaseUser currentUser;
     private ValueEventListener valueEventListenerGetUsers;
-
 
     private RecyclerView recyclerViewUsersContacts;
     private AdapterContacts adapterListContacts;
@@ -79,10 +79,21 @@ public class ContactsFragment extends Fragment {
                                 //startActivity(new Intent(getActivity(), ChatActivity.class));
 
                                 User userSelected = listUsers.get(position);
+                                boolean header = userSelected.getEmail().isEmpty();
 
-                                Intent intent = new Intent (getActivity(), ChatActivity.class);
-                                intent.putExtra("selectedContact", userSelected);
-                                startActivity(intent);
+                                if (header) {
+                                    Intent intent = new Intent (getActivity(), GroupActivity.class);
+                                    startActivity(intent);
+
+
+                                } else {
+                                    Intent intent = new Intent (getActivity(), ChatActivity.class);
+                                    intent.putExtra("selectedContact", userSelected);
+                                    startActivity(intent);
+                                }
+
+
+
                             }
 
                             @Override
@@ -108,6 +119,8 @@ public class ContactsFragment extends Fragment {
         tasks2.setName("User 2");
         listUsers.add(tasks2);*/
 
+
+
     }
 
     private void getAllUsers() {
@@ -119,7 +132,18 @@ public class ContactsFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                listUsers.clear();
+               listUsers.clear();
+
+                /*
+                *   Definir o utilizador com o correio eletrónico vazio em caso de
+                *   endereço eletrónico ou utilizador será utilizado como
+                *   cabeçalho, exibindo novo grupo*/
+
+                User usersGroup = new User();
+                usersGroup.setName("Novo grupo");
+                usersGroup.setEmail("");
+                listUsers.add(usersGroup);
+
                 for (DataSnapshot data: dataSnapshot.getChildren()){
 
                     User users = data.getValue(User.class);
@@ -129,8 +153,12 @@ public class ContactsFragment extends Fragment {
                         listUsers.add( users );
                     }
 
+
+
                 }
                 adapterListContacts.notifyDataSetChanged();
+
+
             }
 
             @Override
@@ -138,6 +166,9 @@ public class ContactsFragment extends Fragment {
 
             }
         });
+
+
+
     }
 
 

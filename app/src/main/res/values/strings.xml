@@ -37,4 +37,5 @@
     <string name="text_information_config">Esse não é o seu nome de usuário nem sua senha. Esse nome ficará visível para seus contatos do WhatApp</string>
     <string name="checkedtextview">CheckedTextView</string>
     <string name="title_activity_chat">ChatActivity</string>
+    <string name="title_activity_group">GroupActivity</string>
 </resources>

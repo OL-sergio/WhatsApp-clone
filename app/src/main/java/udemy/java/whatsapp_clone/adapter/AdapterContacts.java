@@ -57,6 +57,7 @@ public class AdapterContacts extends RecyclerView.Adapter<AdapterContacts.MyView
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         User users = usersList.get(position);
+        boolean header = users.getEmail().isEmpty();
 
         holder.textViewName.setText(users.getName());
         holder.textViewEmail.setText(users.getEmail());
@@ -70,7 +71,13 @@ public class AdapterContacts extends RecyclerView.Adapter<AdapterContacts.MyView
                     .into(holder.circleImageViewProfile);
 
         }else  {
-            holder.circleImageViewProfile.setImageResource(R.drawable.padrao);
+            if (header){
+                holder.circleImageViewProfile.setImageResource(R.drawable.icone_grupo);
+                holder.textViewEmail.setVisibility(View.GONE);
+            }else {
+                holder.circleImageViewProfile.setImageResource(R.drawable.padrao);
+            }
+
         }
 
     }

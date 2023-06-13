@@ -14,18 +14,30 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         app:civ_border_color="@color/borderImage"
-        app:civ_border_width="2dp"
+        app:civ_border_width="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <LinearLayout
+        android:layout_width="325dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/include2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/circleImage_rowViewUsers"
+        app:layout_constraintTop_toTopOf="parent">
+
+
         <CheckedTextView
             android:id="@+id/textView_rowViewName"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="10dp"
-            android:padding="1dp"
+            android:padding="2dp"
             android:text="@string/checkedtextview"
             android:textColor="@color/black"
             android:textSize="12sp"
@@ -39,22 +51,27 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
+            android:padding="2dp"
+            android:text="@string/checkedtextview"
             android:textColor="@color/gray"
             android:textSize="12sp"
-            android:padding="1dp"
-            android:text="@string/checkedtextview"
             app:layout_constraintStart_toEndOf="@+id/circleImage_rowViewUsers"
             app:layout_constraintTop_toBottomOf="@+id/textView_rowViewName" />
 
+    </LinearLayout>
 
     <include
+        android:id="@+id/include2"
         layout="@layout/divisor"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginStart="85dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="65dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_rowViewEmail" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
