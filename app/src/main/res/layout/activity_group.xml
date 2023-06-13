@@ -7,35 +7,43 @@
     android:fitsSystemWindows="true"
     tools:context=".activity.GroupActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarMain"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/purple_700"
-        android:theme="@style/ToolBarMain"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:popupTheme="@style/ToolBarMain">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/circleImage_chatToolbarProfileImage"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginRight="16dp"
-            android:src="@drawable/padrao" />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarMain"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/purple_700"
+            android:theme="@style/ToolBarMain"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:popupTheme="@style/ToolBarMain">
 
-        <TextView
-            android:id="@+id/textView_chatToolbarUserName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="testing perposes"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/textView_chatToolbarUserName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="testing perposes"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-    </androidx.appcompat.widget.Toolbar>
+        </androidx.appcompat.widget.Toolbar>
 
-    <include layout="@layout/content_group" />
+        <include
+            android:id="@+id/include"
+            layout="@layout/content_group" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -45,7 +53,6 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/purple_500"
-
         app:srcCompat="@drawable/ic_send_message" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

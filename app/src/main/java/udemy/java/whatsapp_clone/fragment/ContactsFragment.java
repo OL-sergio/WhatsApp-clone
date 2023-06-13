@@ -49,8 +49,9 @@ public class ContactsFragment extends Fragment {
             Bundle savedInstanceState
     ) {
         // Inflate the layout for this fragment
-       binding = FragmentContactsBinding.inflate(inflater, container, false);
+       binding = FragmentContactsBinding.inflate(getLayoutInflater());
        return binding.getRoot();
+
     }
 
 
@@ -181,12 +182,12 @@ public class ContactsFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-      databaseReference.removeEventListener(valueEventListenerGetUsers);
+
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        binding = null;
+
     }
 }

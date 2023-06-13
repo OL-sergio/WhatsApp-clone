@@ -51,7 +51,7 @@ public class ConversationsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentConversationsBinding.inflate(inflater, container, false);
+        binding = FragmentConversationsBinding.inflate(getLayoutInflater());
         return binding.getRoot();
 
     }
