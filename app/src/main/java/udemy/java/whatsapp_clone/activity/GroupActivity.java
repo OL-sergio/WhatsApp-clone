@@ -2,6 +2,7 @@ package udemy.java.whatsapp_clone.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,11 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import udemy.java.whatsapp_clone.R;
 import udemy.java.whatsapp_clone.adapter.AdapterContacts;
+import udemy.java.whatsapp_clone.adapter.AdapterGroups;
 import udemy.java.whatsapp_clone.config.FirebaseConfiguration;
 import udemy.java.whatsapp_clone.databinding.ActivityGroupBinding;
 import udemy.java.whatsapp_clone.helper.FirebaseUsers;
+import udemy.java.whatsapp_clone.helper.RecyclerItemClickListener;
 import udemy.java.whatsapp_clone.model.User;
 
 public class GroupActivity extends AppCompatActivity {
@@ -34,13 +36,17 @@ public class GroupActivity extends AppCompatActivity {
     private ActivityGroupBinding binding;
 
     private List<User> listMembers = new ArrayList<>();
+    private List<User> listMembersSeletedMembers = new ArrayList<>();
 
     private DatabaseReference databaseReference = FirebaseConfiguration.getDatabaseReference();
     private FirebaseUser currentUser;
-    private ValueEventListener valueEventListenerGroupMembers;
+    private ValueEventListener valueEventListenerGroupMembers, valueEventListenerSelectedGroup;
+
 
     private RecyclerView recyclerViewSelectedUsers, recyclerViewGroupMembers;
     private AdapterContacts adapterContacts;
+    private AdapterGroups adapterSelectedGroup;
+    private Toolbar toolbarMain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +56,7 @@ public class GroupActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
 
-        Toolbar toolbarMain  =  findViewById(R.id.toolbarMain);
+        toolbarMain = binding.toolbarMain;
         toolbarMain.setTitle("");
         setSupportActionBar(toolbarMain);
 
@@ -71,7 +77,7 @@ public class GroupActivity extends AppCompatActivity {
         //Adapter configuration
         adapterContacts = new AdapterContacts(listMembers, getApplicationContext());
 
-        //RecyclerView configuration
+        //RecyclerView contacts configuration
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerViewGroupMembers.setLayoutManager(layoutManager);
         recyclerViewGroupMembers.setHasFixedSize(true);
@@ -79,6 +85,52 @@ public class GroupActivity extends AppCompatActivity {
 
         databaseReference = FirebaseConfiguration.getDatabaseReference().child("users");
         currentUser = FirebaseUsers.getCurrentUser();
+
+        recyclerViewGroupMembers.addOnItemTouchListener( new RecyclerItemClickListener(
+                getApplicationContext(), recyclerViewGroupMembers,
+                new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+
+                User userSelected = listMembers.get(position);
+
+                //Remove selected user from list
+                listMembers.remove(userSelected);
+                adapterContacts.notifyDataSetChanged();
+
+
+                //Adding selected users to a new list
+                listMembersSeletedMembers.add(userSelected);
+                adapterSelectedGroup.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onLongItemClick(View view, int position) {
+
+            }
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        }
+        ));
+
+
+        //RecyclerView selected contacts configuration
+        adapterSelectedGroup = new AdapterGroups(listMembersSeletedMembers, getApplicationContext());
+
+        RecyclerView.LayoutManager layoutManagerHorizontal = new LinearLayoutManager(
+                getApplicationContext(),
+                LinearLayoutManager.HORIZONTAL,
+                false
+        );
+
+        recyclerViewSelectedUsers.setLayoutManager(layoutManagerHorizontal);
+        recyclerViewSelectedUsers.setHasFixedSize(true);
+        recyclerViewSelectedUsers.setAdapter(adapterSelectedGroup);
+
 
     }
     private void recoverContacts() {
@@ -97,12 +149,8 @@ public class GroupActivity extends AppCompatActivity {
                         listMembers.add( users );
                     }
 
-
-
                 }
                 adapterContacts.notifyDataSetChanged();
-
-
             }
 
             @Override
