@@ -18,6 +18,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -40,7 +41,7 @@ public class GroupActivity extends AppCompatActivity {
 
     private DatabaseReference databaseReference = FirebaseConfiguration.getDatabaseReference();
     private FirebaseUser currentUser;
-    private ValueEventListener valueEventListenerGroupMembers, valueEventListenerSelectedGroup;
+    private ValueEventListener valueEventListenerGroupMembers;
 
 
     private RecyclerView recyclerViewSelectedUsers, recyclerViewGroupMembers;
@@ -162,6 +163,7 @@ public class GroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), CreateGroupActivity.class);
+                intent.putExtra("members", (Serializable) listMembersSeletedMembers);
                 startActivity(intent);
             }
         });
