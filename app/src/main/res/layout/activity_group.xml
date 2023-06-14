@@ -38,13 +38,15 @@
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/fab_goToCreateGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/purple_500"
-        app:srcCompat="@drawable/ic_send_message" />
+        android:importantForAccessibility="no"
+        app:fabSize="normal"
+        app:srcCompat="@drawable/ic_arrow_forward" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,5 +1,6 @@
 package udemy.java.whatsapp_clone.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -46,8 +46,8 @@ public class GroupActivity extends AppCompatActivity {
     private RecyclerView recyclerViewSelectedUsers, recyclerViewGroupMembers;
     private AdapterContacts adapterContacts;
     private AdapterGroups adapterSelectedGroup;
+    private FloatingActionButton fabGoToCreateGroup;
     private Toolbar toolbar;
-
 
 
     @Override
@@ -62,19 +62,12 @@ public class GroupActivity extends AppCompatActivity {
         updatedMembersToolbar();
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) binding.fab;
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Snackbar.make(v, "a", Snackbar.LENGTH_LONG).setAction("A",null).show();
-            }
-        });
-
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         recyclerViewGroupMembers = binding.include.recyclerViewGroupMembers;
         recyclerViewSelectedUsers = binding.include.recyclerViewSelectedUsers;
+        fabGoToCreateGroup = binding.fabGoToCreateGroup;
+
 
         //Adapter configuration
         adapterContacts = new AdapterContacts(listMembers, getApplicationContext());
@@ -164,6 +157,14 @@ public class GroupActivity extends AppCompatActivity {
                         }
                 )
         );
+
+        fabGoToCreateGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), CreateGroupActivity.class);
+                startActivity(intent);
+            }
+        });
     }
     private void recoverContacts() {
 

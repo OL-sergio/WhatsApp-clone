@@ -18,6 +18,12 @@
         android:theme="@style/Theme.WhatsAppclone"
         tools:targetApi="31">
         <activity
+            android:name=".activity.CreateGroupActivity"
+            android:exported="false"
+            android:label="@string/title_activity_create_group"
+            android:parentActivityName=".activity.GroupActivity"
+            android:theme="@style/Theme.WhatsAppclone.NoActionBar" />
+        <activity
             android:name=".activity.GroupActivity"
             android:exported="false"
             android:label="@string/title_activity_group"
@@ -37,8 +43,7 @@
             android:name=".activity.ConfigurationsActivity"
             android:exported="false"
             android:parentActivityName=".activity.MainActivity"
-            android:theme="@style/Theme.WhatsAppclone.NoActionBar">
-        </activity>
+            android:theme="@style/Theme.WhatsAppclone.NoActionBar"/>
         <activity
             android:name=".activity.RegisterActivity"
             android:exported="true"
