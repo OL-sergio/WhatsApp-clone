@@ -23,14 +23,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:popupTheme="@style/ToolBarMain">
 
-            <TextView
-                android:id="@+id/textView_chatToolbarUserName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="testing perposes"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
         </androidx.appcompat.widget.Toolbar>
 
         <include

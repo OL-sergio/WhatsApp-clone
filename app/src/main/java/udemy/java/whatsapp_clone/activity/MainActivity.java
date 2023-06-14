@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         toolbarMain.setTitle("WhatApp");
         setSupportActionBar(toolbarMain);
 
-        //Config
+        //Configuring the fragments on view pager navigation
         FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), FragmentPagerItems.with(this)
                 .add(R.string.conversas, ConversationsFragment.class)

@@ -46,7 +46,9 @@ public class GroupActivity extends AppCompatActivity {
     private RecyclerView recyclerViewSelectedUsers, recyclerViewGroupMembers;
     private AdapterContacts adapterContacts;
     private AdapterGroups adapterSelectedGroup;
-    private Toolbar toolbarMain;
+    private Toolbar toolbar;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +57,10 @@ public class GroupActivity extends AppCompatActivity {
         binding = ActivityGroupBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
-        toolbarMain = binding.toolbarMain;
-        toolbarMain.setTitle("");
-        setSupportActionBar(toolbarMain);
+        toolbar = binding.toolbarMain;
+        toolbar.setTitle("Novo grupo");
+        updatedMembersToolbar();
+        setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) binding.fab;
 
@@ -86,36 +88,37 @@ public class GroupActivity extends AppCompatActivity {
         databaseReference = FirebaseConfiguration.getDatabaseReference().child("users");
         currentUser = FirebaseUsers.getCurrentUser();
 
-        recyclerViewGroupMembers.addOnItemTouchListener( new RecyclerItemClickListener(
-                getApplicationContext(), recyclerViewGroupMembers,
-                new RecyclerItemClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
+        recyclerViewGroupMembers.addOnItemTouchListener(
+                new RecyclerItemClickListener(
+                    getApplicationContext(), recyclerViewGroupMembers,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
 
+                                User userSelected = listMembers.get(position);
 
-                User userSelected = listMembers.get(position);
+                                //Remove selected user from list
+                                listMembers.remove(userSelected);
+                                adapterContacts.notifyDataSetChanged();
 
-                //Remove selected user from list
-                listMembers.remove(userSelected);
-                adapterContacts.notifyDataSetChanged();
+                                //Adding selected users to a new list
+                                listMembersSeletedMembers.add(userSelected);
+                                adapterSelectedGroup.notifyDataSetChanged();
+                                updatedMembersToolbar();
+                            }
 
+                            @Override
+                            public void onLongItemClick(View view, int position) {
 
-                //Adding selected users to a new list
-                listMembersSeletedMembers.add(userSelected);
-                adapterSelectedGroup.notifyDataSetChanged();
-            }
+                            }
 
-            @Override
-            public void onLongItemClick(View view, int position) {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-            }
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-        }
-        ));
+                        }
+                    }
+                )
+        );
 
 
         //RecyclerView selected contacts configuration
@@ -131,7 +134,36 @@ public class GroupActivity extends AppCompatActivity {
         recyclerViewSelectedUsers.setHasFixedSize(true);
         recyclerViewSelectedUsers.setAdapter(adapterSelectedGroup);
 
+        recyclerViewSelectedUsers.addOnItemTouchListener(
+                new RecyclerItemClickListener(
+                        getApplicationContext(),
+                        recyclerViewSelectedUsers,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                User userSelected = listMembersSeletedMembers.get(position);
 
+                                listMembersSeletedMembers.remove(userSelected);
+                                adapterSelectedGroup.notifyDataSetChanged();
+
+                                listMembers.add(userSelected);
+                                adapterContacts.notifyDataSetChanged();
+                                updatedMembersToolbar();
+
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+
+                            }
+
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                            }
+                        }
+                )
+        );
     }
     private void recoverContacts() {
 
@@ -151,6 +183,7 @@ public class GroupActivity extends AppCompatActivity {
 
                 }
                 adapterContacts.notifyDataSetChanged();
+                updatedMembersToolbar();
             }
 
             @Override
@@ -158,6 +191,15 @@ public class GroupActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    public void updatedMembersToolbar(){
+
+        int totalSelected = listMembersSeletedMembers.size();
+        int sum = listMembers.size() + totalSelected;
+
+        toolbar.setSubtitle(totalSelected + " de " + sum + " selecionados");
 
     }
 
