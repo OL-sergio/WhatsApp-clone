@@ -34,11 +34,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        userAuthentication = FirebaseConfiguration.getUserAuthentication();
-
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        userAuthentication = FirebaseConfiguration.getUserAuthentication();
 
         Toolbar toolbarMain  =  findViewById(R.id.toolbarMain);
         toolbarMain.setTitle("WhatApp");

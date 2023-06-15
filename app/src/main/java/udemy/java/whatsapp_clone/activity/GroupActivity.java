@@ -56,7 +56,8 @@ public class GroupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         binding = ActivityGroupBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        View view = binding.getRoot();
+        setContentView(view);
 
         toolbar = binding.toolbarMain;
         toolbar.setTitle("Novo grupo");

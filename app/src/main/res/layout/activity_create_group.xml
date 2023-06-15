@@ -16,6 +16,7 @@
         <TextView
             android:id="@+id/textTotal"
             android:layout_width="match_parent"
+            android:visibility="gone"
             android:layout_height="50dp"/>
 
         <androidx.appcompat.widget.Toolbar
@@ -31,7 +32,9 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-        <include layout="@layout/content_create_group" />
+        <include
+            android:id="@+id/content_createGroup"
+            layout="@layout/content_create_group" />
 
     </LinearLayout>
 
@@ -45,6 +48,6 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:importantForAccessibility="no"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        app:srcCompat="@drawable/ic_baseline_check" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
