@@ -71,7 +71,7 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public String getEmail() {
+    public  String getEmail() {
         return email;
     }
 

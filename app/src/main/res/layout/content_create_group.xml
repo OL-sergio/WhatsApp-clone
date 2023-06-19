@@ -31,6 +31,7 @@
                 android:layout_weight="1"
                 android:layout_gravity="center_vertical"
                 android:ems="10"
+                android:paddingStart="12dp"
                 android:hint="Nome do Grupo"
                 android:inputType="text" />
 

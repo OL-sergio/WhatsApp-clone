@@ -6,14 +6,15 @@ import java.io.Serializable;
 import java.util.List;
 
 import udemy.java.whatsapp_clone.config.FirebaseConfiguration;
+import udemy.java.whatsapp_clone.helper.Base64Custom;
 
-public class Group implements Serializable {
+public class Groups implements Serializable {
     private String id;
     private String name;
     private String photo;
     private List<User> members;
 
-    public Group() {
+    public Groups() {
 
         DatabaseReference databaseReference = FirebaseConfiguration.getDatabaseReference();
         DatabaseReference groupRef = databaseReference.child("groups");
@@ -22,6 +23,31 @@ public class Group implements Serializable {
         setId(idGroupFirebase);
 
     }
+
+    public void saveGroup() {
+
+        DatabaseReference databaseReference = FirebaseConfiguration.getDatabaseReference();
+        DatabaseReference groupRef = databaseReference.child("groups");
+
+        groupRef.child(getId()).setValue(this);
+
+        //Save conversations on group
+        for ( User members : getMembers() ){
+
+            String idSender = Base64Custom.encryptionBase64(members.getEmail());
+            String idReceiver = getId();
+
+            Conversations conversations = new Conversations();
+            conversations.setIdSender(idSender);
+            conversations.setIdReceiver(idReceiver);
+            conversations.setLastUseMessage("");
+            conversations.setIsGroup("true");
+            conversations.setGroup(this);
+
+            conversations.saveConversation();
+        }
+    }
+
 
     public String getId() {
         return id;
@@ -39,6 +65,7 @@ public class Group implements Serializable {
         this.name = name;
     }
 
+
     public String getPhoto() {
         return photo;
     }
@@ -51,7 +78,10 @@ public class Group implements Serializable {
         return members;
     }
 
+
     public void setMembers(List<User> members) {
         this.members = members;
     }
+
+
 }

@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +28,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -38,18 +39,18 @@ import java.util.List;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import udemy.java.whatsapp_clone.R;
 import udemy.java.whatsapp_clone.adapter.AdapterGroups;
 import udemy.java.whatsapp_clone.config.FirebaseConfiguration;
 import udemy.java.whatsapp_clone.databinding.ActivityCreateGroupBinding;
-import udemy.java.whatsapp_clone.model.Group;
+import udemy.java.whatsapp_clone.helper.FirebaseUsers;
+import udemy.java.whatsapp_clone.model.Groups;
 import udemy.java.whatsapp_clone.model.User;
 
 public class CreateGroupActivity extends AppCompatActivity {
 
     private ActivityCreateGroupBinding binding;
 
-    private Group group;
+    private Groups group;
     private List<User> listSeletedMembers = new ArrayList<>();
 
     private StorageReference storageReference;
@@ -61,8 +62,9 @@ public class CreateGroupActivity extends AppCompatActivity {
     private TextView textViewTotal;
     private TextView totalSelectedUsers;
     private CircleImageView imageViewCreateGroup;
+    private FloatingActionButton fabCreateGroup;
+    private EditText editTextGroupName;
 
-    private String userIdentification;
 
     private Bitmap image = null;
 
@@ -87,8 +89,10 @@ public class CreateGroupActivity extends AppCompatActivity {
         totalSelectedUsers = binding.contentCreateGroup.textViewUsersSelectedGroupCount;
         recyclerViewSelectedUsers = binding.contentCreateGroup.recyclerViewGroupSelectedMembersGroup;
         imageViewCreateGroup = binding.contentCreateGroup.circleImageviewCreateImageGroup;
+        fabCreateGroup = binding.fabCreateGroup;
+        editTextGroupName = binding.contentCreateGroup.editTextTextAddGroupName;
 
-        group = new Group();
+        group = new Groups();
 
         storageReference = FirebaseConfiguration.getFirebaseStorage();
 
@@ -100,12 +104,18 @@ public class CreateGroupActivity extends AppCompatActivity {
             }
         });
 
-        binding.fabCreateGroup.setOnClickListener(new View.OnClickListener() {
+        fabCreateGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAnchorView(R.id.fab_createGroup)
-                        .setAction("Action", null).show();
+
+                String groupName = editTextGroupName.getText().toString();
+
+                listSeletedMembers.add( FirebaseUsers.getCurrentUserData() );
+                group.setMembers(listSeletedMembers);
+
+                group.setName(groupName);
+                group.saveGroup();
+
             }
         });
 

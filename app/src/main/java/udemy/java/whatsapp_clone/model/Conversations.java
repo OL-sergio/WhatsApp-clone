@@ -10,10 +10,11 @@ public class Conversations {
     private String idReceiver;
     private String lastUseMessage;
     private User userExhibition;
-
-
+    private String isGroup;
+    private Groups group;
 
     public Conversations() {
+        this.setIsGroup("false");
     }
 
     public void saveConversation(){
@@ -55,5 +56,21 @@ public class Conversations {
 
     public void setUserExhibition(User userExhibition) {
         this.userExhibition = userExhibition;
+    }
+
+    public String getIsGroup() {
+        return isGroup;
+    }
+
+    public void setIsGroup(String isGroup) {
+        this.isGroup = isGroup;
+    }
+
+    public Groups getGroup() {
+        return group;
+    }
+
+    public void setGroup(Groups group) {
+        this.group = group;
     }
 }
