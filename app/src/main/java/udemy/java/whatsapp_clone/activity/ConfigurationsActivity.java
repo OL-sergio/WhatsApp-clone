@@ -87,7 +87,7 @@ public class ConfigurationsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         storageReference = FirebaseConfiguration.getFirebaseStorage();
-        userIdentification = getUserIdentification();
+        userIdentification = FirebaseUsers.getUserIdentification();
         currentUser = FirebaseUsers.getCurrentUserData();
 
 
@@ -107,16 +107,19 @@ public class ConfigurationsActivity extends AppCompatActivity {
 
         Uri url = user.getPhotoUrl();
 
-        if (url != null ) {
+
+
+        if (url == null ) {
 
           Glide.with(ConfigurationsActivity.this)
                         .asBitmap()
                         .load(url)
                         .into(circleImageViewSetImage);
 
-        }
+        } else {
 
-        circleImageViewSetImage.setImageResource(R.drawable.padrao);
+            circleImageViewSetImage.setImageResource(R.drawable.padrao);
+        }
 
         userProfileName.setText(user.getDisplayName());
 
@@ -239,7 +242,7 @@ public class ConfigurationsActivity extends AppCompatActivity {
                 .child("images")
                 .child("profile")
                 .child(userIdentification)
-                // .child(userIdentification + ".jpeg")
+                //.child(userIdentification + ".jpeg");
                 .child("profile.jpeg");
 
         UploadTask uploadTask = imageRef.putBytes( dataImage );
