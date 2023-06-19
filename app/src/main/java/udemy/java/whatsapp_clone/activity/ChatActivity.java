@@ -1,7 +1,5 @@
 package udemy.java.whatsapp_clone.activity;
 
-import static udemy.java.whatsapp_clone.helper.FirebaseUsers.getUserIdentification;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -51,6 +49,7 @@ import udemy.java.whatsapp_clone.databinding.ActivityChatBinding;
 import udemy.java.whatsapp_clone.helper.Base64Custom;
 import udemy.java.whatsapp_clone.helper.FirebaseUsers;
 import udemy.java.whatsapp_clone.model.Conversations;
+import udemy.java.whatsapp_clone.model.Groups;
 import udemy.java.whatsapp_clone.model.Message;
 import udemy.java.whatsapp_clone.model.User;
 
@@ -65,6 +64,7 @@ public class ChatActivity extends AppCompatActivity {
     private ImageButton sendMessages;
 
     private User userReceived;
+    private Groups groupsConversations;
 
     private String idUserReceiver;
     private String idUserSender;
@@ -106,7 +106,7 @@ public class ChatActivity extends AppCompatActivity {
         recyclerViewMessages = binding.recyclerViewViewMessages;
 
         storageReference = FirebaseConfiguration.getFirebaseStorage();
-        userIdentification = getUserIdentification();
+        userIdentification = FirebaseUsers.getUserIdentification();
 
         //Retrieve user data of current user
         idUserSender = FirebaseUsers.getUserIdentification() ;
@@ -115,23 +115,47 @@ public class ChatActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if ( bundle != null ){
 
-            userReceived = (User) bundle.getSerializable("selectedContact");
-            chatUsername.setText(userReceived.getName());
+       if ( bundle.containsKey("selectedGroup") ){
 
-            String photoUrl = userReceived.getPhoto();
-            if ( photoUrl != null ) {
+                groupsConversations = (Groups) bundle.getSerializable("selectedGroup");
+                idUserReceiver = groupsConversations.getId();
 
-                Uri url = Uri.parse(userReceived.getPhoto());
+                chatUsername.setText(groupsConversations.getName());
 
-                Glide.with(ChatActivity.this)
-                        .load(url)
-                        .into(circleImageViewUserPhoto);
+                String photoUrl = groupsConversations.getPhoto();
+                if ( photoUrl != null ) {
+
+                    Uri url = Uri.parse(photoUrl);
+                    Glide.with(ChatActivity.this)
+                            .load(url)
+                            .into(circleImageViewUserPhoto);
+
+                } else {
+                    circleImageViewUserPhoto.setImageResource(R.drawable.padrao);
+                }
             } else {
-                circleImageViewUserPhoto.setImageResource(R.drawable.padrao);
-            }
 
-            // Retrieve data from receiver user
-            idUserReceiver = Base64Custom.encryptionBase64( userReceived.getEmail() );
+
+                userReceived = (User) bundle.getSerializable("selectedContact");
+                chatUsername.setText(userReceived.getName());
+
+                String photoUrl = userReceived.getPhoto();
+                if ( photoUrl != null ) {
+
+                    Uri url = Uri.parse(userReceived.getPhoto());
+
+                    Glide.with(ChatActivity.this)
+                            .load(url)
+                            .into(circleImageViewUserPhoto);
+                } else {
+                    circleImageViewUserPhoto.setImageResource(R.drawable.padrao);
+                }
+
+                // Retrieve data from receiver user
+                idUserReceiver = Base64Custom.encryptionBase64( userReceived.getEmail() );
+
+
+            }
 
          }
 

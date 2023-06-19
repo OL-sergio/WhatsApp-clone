@@ -107,9 +107,7 @@ public class ConfigurationsActivity extends AppCompatActivity {
 
         Uri url = user.getPhotoUrl();
 
-
-
-        if (url == null ) {
+        if (url != null ) {
 
           Glide.with(ConfigurationsActivity.this)
                         .asBitmap()

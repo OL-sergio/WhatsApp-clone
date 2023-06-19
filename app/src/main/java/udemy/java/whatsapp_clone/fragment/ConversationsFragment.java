@@ -82,9 +82,21 @@ public class ConversationsFragment extends Fragment {
 
                         Conversations conversationsSelected = listConversations.get(position);
 
-                        Intent intent = new Intent (getActivity(), ChatActivity.class);
-                        intent.putExtra("selectedContact", conversationsSelected.getUserExhibition());
-                        startActivity(intent);
+                        if (conversationsSelected.getIsGroup().equals("true")){
+
+                            Intent intent = new Intent (getActivity(), ChatActivity.class);
+                            intent.putExtra("selectedGroup", conversationsSelected.getGroup());
+                            startActivity(intent);
+
+                        }else {
+
+                            Intent intent = new Intent (getActivity(), ChatActivity.class);
+                            intent.putExtra("selectedContact", conversationsSelected.getUserExhibition());
+                            startActivity(intent);
+
+                        }
+
+
 
                     }
 

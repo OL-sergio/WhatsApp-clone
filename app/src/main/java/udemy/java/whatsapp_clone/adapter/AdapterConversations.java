@@ -17,6 +17,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import udemy.java.whatsapp_clone.R;
 import udemy.java.whatsapp_clone.model.Conversations;
+import udemy.java.whatsapp_clone.model.Groups;
 import udemy.java.whatsapp_clone.model.User;
 
 
@@ -31,7 +32,7 @@ public class AdapterConversations extends RecyclerView.Adapter<AdapterConversati
 
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView textViewName, textViewLastMessage;
         CircleImageView circleImageViewProfile;
@@ -63,27 +64,41 @@ public class AdapterConversations extends RecyclerView.Adapter<AdapterConversati
         Conversations conversations = conversationsList.get(position);
         holder.textViewLastMessage.setText(conversations.getLastUseMessage());
 
-        User user = conversations.getUserExhibition();
-        holder.textViewName.setText(user.getName());
+        if (conversations.getIsGroup().equals("true")) {
 
-        if ( user.getPhoto() != null ) {
+            Groups groups = conversations.getGroup();
+            holder.textViewName.setText( groups.getName() );
 
-            Uri uri = Uri.parse(user.getPhoto());
-            Glide.with(context)
-                    .load(uri)
-                    .into(holder.circleImageViewProfile);
+            if ( groups.getPhoto() != null ){
+
+                Uri uri = Uri.parse( groups .getPhoto() );
+                Glide.with(context)
+                        .load(uri)
+                        .into(holder.circleImageViewProfile);
+
+            } else {
+                holder.circleImageViewProfile.setImageResource(R.drawable.padrao);
+            }
 
         } else {
-            holder.circleImageViewProfile.setImageResource(R.drawable.padrao);
+            User user = conversations.getUserExhibition();
+            holder.textViewName.setText(user.getName());
 
+            if ( user.getPhoto() != null ) {
+
+                Uri uri = Uri.parse(user.getPhoto());
+                Glide.with(context)
+                        .load(uri)
+                        .into(holder.circleImageViewProfile);
+            }else {
+                holder.circleImageViewProfile.setImageResource(R.drawable.padrao);
+            }
         }
-
     }
 
     @Override
     public int getItemCount() {
         return conversationsList.size();
     }
-
 
 }
