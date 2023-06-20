@@ -13,8 +13,7 @@
         android:orientation="vertical"
         android:background="@drawable/dw_bg_messages_sender"
         android:padding="12dp"
-        android:layout_alignParentEnd="true"
-        >
+        android:layout_alignParentEnd="true">
 
         <TextView
             android:id="@+id/textView_userExhibition"
@@ -36,7 +35,5 @@
             android:textSize="18dp"
             android:scaleType="fitXY"
             android:text="testing" />
-
     </LinearLayout>
-
 </RelativeLayout>

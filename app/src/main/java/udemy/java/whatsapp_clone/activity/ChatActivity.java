@@ -63,7 +63,7 @@ public class ChatActivity extends AppCompatActivity {
     private ImageView openCamara;
     private ImageButton sendMessages;
 
-    private User userReceived;
+    private User userReceiver;
     private User userSender;
     private Groups groupsConversations;
 
@@ -138,13 +138,13 @@ public class ChatActivity extends AppCompatActivity {
 
             } else {
 
-                userReceived = (User) bundle.getSerializable("selectedContact");
-                chatUsername.setText(userReceived.getName());
+                userReceiver = (User) bundle.getSerializable("selectedContact");
+                chatUsername.setText(userReceiver.getName());
 
-                String photoUrl = userReceived.getPhoto();
+                String photoUrl = userReceiver.getPhoto();
                 if ( photoUrl != null ) {
 
-                    Uri url = Uri.parse(userReceived.getPhoto());
+                    Uri url = Uri.parse(userReceiver.getPhoto());
 
                     Glide.with(ChatActivity.this)
                             .load(url)
@@ -153,7 +153,7 @@ public class ChatActivity extends AppCompatActivity {
                    circleImageViewUserPhoto.setImageResource(R.drawable.padrao);
                 }
                 // Retrieve data from receiver user
-                idUserReceiver = Base64Custom.encryptionBase64( userReceived.getEmail() );
+                idUserReceiver = Base64Custom.encryptionBase64( userReceiver.getEmail() );
             }
 
          }
@@ -200,8 +200,6 @@ public class ChatActivity extends AppCompatActivity {
                         image  = (Bitmap) localImageSelection.get("data");
 
                         if (image != null){
-
-
                            saveImageOnFirebase();
 
                         }
@@ -243,14 +241,39 @@ public class ChatActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Uri> task) {
                         String url = task.getResult().toString();
 
-                        Message message = new Message();
-                        message.setIdUser(idUserSender);
-                        message.setMessage("image.jpeg");
-                        message.setImage(url);
 
-                        saveMessage(idUserSender, idUserReceiver, message);
 
-                        saveMessage(idUserReceiver, idUserSender, message);
+                        if (userReceiver != null ){
+
+                            Message message = new Message();
+                            message.setIdUser(idUserSender);
+                            message.setMessage("image.jpeg");
+                            message.setImage(url);
+
+                            saveMessage(idUserSender, idUserReceiver, message);
+
+                            saveMessage(idUserReceiver, idUserSender, message);
+
+                        }else {
+
+                            for ( User member : groupsConversations.getMembers() ){
+
+                                String idSenderGroup = Base64Custom.encryptionBase64(member.getEmail());
+                                String idUserLoggedGroup = FirebaseUsers.getUserIdentification();
+
+                                Message message = new Message();
+                                message.setIdUser( idUserLoggedGroup );
+                                message.setMessage( "image.jpg" );
+                                message.setUserName( userSender.getName() );
+                                message.setImage( url );
+
+                                saveMessage(idSenderGroup, idUserReceiver, message );
+
+                                saveConversations(idSenderGroup, idUserReceiver, userReceiver, message, true);
+
+                            }
+
+                        }
 
                         Toast.makeText(ChatActivity.this, "Sucesso a realizar enviar da imagem", Toast.LENGTH_SHORT).show();
 
@@ -308,7 +331,7 @@ public class ChatActivity extends AppCompatActivity {
 
         if (!textMessage.isEmpty()) {
 
-            if(userReceived != null ){
+            if(userReceiver != null ){
 
                 Message message = new Message();
                 message.setIdUser( idUserSender );
@@ -319,7 +342,7 @@ public class ChatActivity extends AppCompatActivity {
 
                 saveMessage(idUserReceiver, idUserSender, message);
 
-                saveConversations(idUserSender, idUserReceiver, userReceived, message, false);
+                saveConversations(idUserSender, idUserReceiver, userReceiver, message, false);
 
                 saveConversations(idUserReceiver, idUserSender, userSender, message, false);
 
@@ -333,13 +356,11 @@ public class ChatActivity extends AppCompatActivity {
                     Message message = new Message();
                     message.setIdUser( idUserLoggedGroup );
                     message.setMessage( textMessage );
-
-
                     message.setUserName( userSender.getName() );
 
                     saveMessage(idSenderGroup, idUserReceiver, message );
 
-                    saveConversations(idSenderGroup, idUserReceiver, userReceived, message, true);
+                    saveConversations(idSenderGroup, idUserReceiver, userReceiver, message, true);
 
                 }
 

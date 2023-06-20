@@ -136,17 +136,9 @@ public class ContactsFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-               listUsers.clear();
-
-                /*
-                *   Definir o utilizador com o correio eletrónico vazio em caso de
-                *   endereço eletrónico ou utilizador será utilizado como
-                *   cabeçalho, exibindo novo grupo*/
-
-                User usersGroup = new User();
-                usersGroup.setName("Novo grupo");
-                usersGroup.setEmail("");
-                listUsers.add(usersGroup);
+               //listUsers.clear();
+                
+                clearUsersContacts();
 
                 for (DataSnapshot data: dataSnapshot.getChildren()){
 
@@ -156,13 +148,8 @@ public class ContactsFragment extends Fragment {
                     if ( !currentUserEmail.equals( users.getEmail() ) ){
                         listUsers.add( users );
                     }
-
-
-
                 }
                 adapterListContacts.notifyDataSetChanged();
-
-
             }
 
             @Override
@@ -170,6 +157,24 @@ public class ContactsFragment extends Fragment {
 
             }
         });
+    }
+
+
+    private void clearUsersContacts() {
+        listUsers.clear();
+        addMenuNewGroup();
+    }
+
+    private void addMenuNewGroup() {
+        /*
+         *   Definir o utilizador com o correio eletrónico vazio em caso de
+         *   endereço eletrónico ou utilizador será utilizado como
+         *   cabeçalho, exibindo novo grupo
+         * */
+        User usersGroup = new User();
+        usersGroup.setName("Novo grupo");
+        usersGroup.setEmail("");
+        listUsers.add(usersGroup);
     }
 
     public void searchContacts(String text){
@@ -210,12 +215,12 @@ public class ContactsFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-
+        databaseReference.removeEventListener(valueEventListenerGetUsers);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-
+        binding  = null;
     }
 }

@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@drawable/dw_bg_messages_receiver"
+        android:padding="12dp"
         android:layout_alignParentStart="true">
 
         <TextView
@@ -34,8 +35,6 @@
             android:layout_margin="6dp"
             android:textSize="18dp"
             android:text="testing"
-            android:scaleType="fitXY"
-            android:visibility="visible" />
-
+            android:scaleType="fitXY" />
     </LinearLayout>
 </RelativeLayout>
