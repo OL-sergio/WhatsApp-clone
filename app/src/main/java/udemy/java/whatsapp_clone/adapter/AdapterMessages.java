@@ -39,12 +39,13 @@ public class AdapterMessages extends RecyclerView.Adapter<AdapterMessages.MyView
 
         TextView messages;
         ImageView images;
+        TextView name;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             messages = itemView.findViewById(R.id.textView_chatMessage);
             images = itemView.findViewById(R.id.imageView_chatImages);
-
+            name = itemView.findViewById(R.id.textView_userExhibition);
         }
     }
 
@@ -77,16 +78,33 @@ public class AdapterMessages extends RecyclerView.Adapter<AdapterMessages.MyView
         String msgImage = message.getImage();
 
 
+
         if ( msgImage != null ){
 
             Uri url = Uri.parse(msgImage);
             Glide.with(context).load(url).into(holder.images);
+
+            String name = message.getUserName();
+            if (!name.isEmpty()){
+                holder.name.setText(name);
+            } else {
+                holder.name.setVisibility(View.GONE);
+
+            }
 
             holder.messages.setVisibility(View.GONE);
 
         }else {
 
             holder.messages.setText(msgText);
+
+            String name = message.getUserName();
+            if (!name.isEmpty()){
+                holder.name.setText(name);
+            } else {
+                holder.name.setVisibility(View.GONE);
+
+            }
 
             holder.images.setVisibility(View.GONE);
         }

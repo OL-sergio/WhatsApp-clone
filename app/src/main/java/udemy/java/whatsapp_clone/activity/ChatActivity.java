@@ -64,6 +64,7 @@ public class ChatActivity extends AppCompatActivity {
     private ImageButton sendMessages;
 
     private User userReceived;
+    private User userSender;
     private Groups groupsConversations;
 
     private String idUserReceiver;
@@ -110,6 +111,7 @@ public class ChatActivity extends AppCompatActivity {
 
         //Retrieve user data of current user
         idUserSender = FirebaseUsers.getUserIdentification() ;
+        userSender = FirebaseUsers.getCurrentUserData();
 
         //Retrieving data from intent
         Bundle bundle = getIntent().getExtras();
@@ -133,8 +135,8 @@ public class ChatActivity extends AppCompatActivity {
                 } else {
                     circleImageViewUserPhoto.setImageResource(R.drawable.padrao);
                 }
-            } else {
 
+            } else {
 
                 userReceived = (User) bundle.getSerializable("selectedContact");
                 chatUsername.setText(userReceived.getName());
@@ -148,13 +150,10 @@ public class ChatActivity extends AppCompatActivity {
                             .load(url)
                             .into(circleImageViewUserPhoto);
                 } else {
-                    circleImageViewUserPhoto.setImageResource(R.drawable.padrao);
+                   circleImageViewUserPhoto.setImageResource(R.drawable.padrao);
                 }
-
                 // Retrieve data from receiver user
                 idUserReceiver = Base64Custom.encryptionBase64( userReceived.getEmail() );
-
-
             }
 
          }
@@ -273,7 +272,6 @@ public class ChatActivity extends AppCompatActivity {
            @Override
            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-
                Message message = snapshot.getValue(Message.class);
                messagesList.add( message );
                adapterMessages.notifyDataSetChanged();
@@ -310,15 +308,42 @@ public class ChatActivity extends AppCompatActivity {
 
         if (!textMessage.isEmpty()) {
 
-            Message message = new Message();
-            message.setIdUser( idUserSender );
-            message.setMessage(textMessage);
+            if(userReceived != null ){
 
-            saveMessage(idUserSender, idUserReceiver, message);
+                Message message = new Message();
+                message.setIdUser( idUserSender );
+                message.setMessage(textMessage);
 
-            saveMessage(idUserReceiver, idUserSender, message);
 
-            saveConversations(message);
+                saveMessage(idUserSender, idUserReceiver, message);
+
+                saveMessage(idUserReceiver, idUserSender, message);
+
+                saveConversations(idUserSender, idUserReceiver, userReceived, message, false);
+
+                saveConversations(idUserReceiver, idUserSender, userSender, message, false);
+
+            } else {
+
+                for ( User member : groupsConversations.getMembers() ){
+
+                    String idSenderGroup = Base64Custom.encryptionBase64(member.getEmail());
+                    String idUserLoggedGroup = FirebaseUsers.getUserIdentification();
+
+                    Message message = new Message();
+                    message.setIdUser( idUserLoggedGroup );
+                    message.setMessage( textMessage );
+
+
+                    message.setUserName( userSender.getName() );
+
+                    saveMessage(idSenderGroup, idUserReceiver, message );
+
+                    saveConversations(idSenderGroup, idUserReceiver, userReceived, message, true);
+
+                }
+
+            }
 
         }else {
             Toast.makeText(this, "Escreva uma mensagen para enviar", Toast.LENGTH_SHORT).show();
@@ -326,13 +351,22 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
-    private void saveConversations( Message message ) {
+    private void saveConversations(String idSender, String idUserReceiver, User userExhibition, Message message, boolean isGroup  ) {
 
         Conversations conversationsSender = new Conversations();
-        conversationsSender.setIdSender( idUserSender );
+        conversationsSender.setIdSender( idSender );
         conversationsSender.setIdReceiver( idUserReceiver );
-        conversationsSender.setLastUseMessage(message.getMessage());
-        conversationsSender.setUserExhibition( userReceived );
+        conversationsSender.setLastUseMessage( message.getMessage() );
+
+        if (isGroup){
+            conversationsSender.setIsGroup("true");
+            conversationsSender.setGroup( groupsConversations );
+
+        }else {
+            conversationsSender.setUserExhibition( userExhibition );
+            conversationsSender.setIsGroup("false");
+
+        }
 
         conversationsSender.saveConversation();
 

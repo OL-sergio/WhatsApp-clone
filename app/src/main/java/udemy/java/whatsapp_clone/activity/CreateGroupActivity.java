@@ -116,6 +116,10 @@ public class CreateGroupActivity extends AppCompatActivity {
                 group.setName(groupName);
                 group.saveGroup();
 
+
+                Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
+                intent.putExtra("selectedGroup", group);
+                startActivity(intent);
             }
         });
 

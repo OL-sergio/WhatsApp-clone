@@ -17,20 +17,25 @@
         >
 
         <TextView
-            android:id="@+id/textView_chatMessage"
-            android:layout_width="wrap_content"
+            android:id="@+id/textView_userExhibition"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18dp"
-            android:scaleType="fitXY"
-            android:text="testing" />
+            android:text="TextView" />
 
         <ImageView
             android:id="@+id/imageView_chatImages"
             android:layout_width="150dp"
             android:layout_height="100dp"
             android:scaleType="fitXY"
-            android:src="@drawable/padrao"
-            android:visibility="visible" />
+            android:src="@drawable/padrao" />
+
+        <TextView
+            android:id="@+id/textView_chatMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:scaleType="fitXY"
+            android:text="testing" />
 
     </LinearLayout>
 

@@ -166,6 +166,7 @@ public class GroupActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), CreateGroupActivity.class);
                 intent.putExtra("members", (Serializable) listMembersSeletedMembers);
                 startActivity(intent);
+
             }
         });
     }

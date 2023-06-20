@@ -1,5 +1,6 @@
 package udemy.java.whatsapp_clone.adapter;
 
+
 import android.content.Context;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -19,7 +20,6 @@ import udemy.java.whatsapp_clone.R;
 import udemy.java.whatsapp_clone.model.Conversations;
 import udemy.java.whatsapp_clone.model.Groups;
 import udemy.java.whatsapp_clone.model.User;
-
 
 public class AdapterConversations extends RecyclerView.Adapter<AdapterConversations.MyViewHolder> {
 
@@ -82,8 +82,10 @@ public class AdapterConversations extends RecyclerView.Adapter<AdapterConversati
 
         } else {
             User user = conversations.getUserExhibition();
-            holder.textViewName.setText(user.getName());
 
+            if (user != null){
+                holder.textViewName.setText(user.getName());
+            }
             if ( user.getPhoto() != null ) {
 
                 Uri uri = Uri.parse(user.getPhoto());
