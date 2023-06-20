@@ -32,6 +32,11 @@ public class AdapterConversations extends RecyclerView.Adapter<AdapterConversati
 
     }
 
+    public List <Conversations> getConversationsList(){
+        return this.conversationsList;
+    }
+
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView textViewName, textViewLastMessage;

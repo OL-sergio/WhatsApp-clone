@@ -29,6 +29,10 @@ public class AdapterContacts extends RecyclerView.Adapter<AdapterContacts.MyView
         this.context = context;
     }
 
+    public List<User> getContacts(){
+        return  this.usersList;
+    }
+
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
         TextView textViewName, textViewEmail;

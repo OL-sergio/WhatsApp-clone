@@ -80,7 +80,9 @@ public class ConversationsFragment extends Fragment {
                     @Override
                     public void onItemClick(View view, int position) {
 
-                        Conversations conversationsSelected = listConversations.get(position);
+
+                        List<Conversations> listConversationsUpdated = adapterListConversations.getConversationsList();
+                        Conversations conversationsSelected = listConversationsUpdated.get(position);
 
                         if (conversationsSelected.getIsGroup().equals("true")){
 
@@ -153,19 +155,30 @@ public class ConversationsFragment extends Fragment {
         });
     }
 
-    public void searChConversations(String text){
+    public void searchConversations(String text){
         //Log.d("event", text);
 
         List<Conversations> searchForConversations = new ArrayList<>();
 
         for ( Conversations conversations : listConversations ) {
 
-            String name = conversations.getUserExhibition().getName().toLowerCase();
-            String lastMessage = conversations.getLastUseMessage().toLowerCase();
+            if(conversations.getUserExhibition() != null){
+                String name = conversations.getUserExhibition().getName().toLowerCase();
+                String lastMessage = conversations.getLastUseMessage().toLowerCase();
 
-            if (name.contains( text ) || lastMessage.contains( text ) ){
-                searchForConversations.add(conversations);
+                if (name.contains( text ) || lastMessage.contains( text ) ){
+                    searchForConversations.add(conversations);
 
+                }
+
+            }else {
+                String name = conversations.getGroup().getName().toLowerCase();
+                String lastMessage = conversations.getLastUseMessage().toLowerCase();
+
+                if (name.contains( text ) || lastMessage.contains( text ) ){
+                    searchForConversations.add(conversations);
+
+                }
             }
         }
 
@@ -175,7 +188,7 @@ public class ConversationsFragment extends Fragment {
 
     }
 
-    public void reLoadMessages(){
+    public void reloadConversationsMessages(){
 
         adapterListConversations = new AdapterConversations(listConversations, getActivity());
         recyclerViewViewConversations.setAdapter(adapterListConversations);
@@ -184,11 +197,10 @@ public class ConversationsFragment extends Fragment {
     }
 
 
-
     @Override
     public void onStart() {
         super.onStart();
-        reLoadMessages();
+        reloadConversationsMessages();
         getUsersConversations();
     }
 

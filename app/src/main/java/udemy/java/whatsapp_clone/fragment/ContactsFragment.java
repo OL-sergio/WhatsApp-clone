@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import udemy.java.whatsapp_clone.activity.ChatActivity;
 import udemy.java.whatsapp_clone.activity.GroupActivity;
@@ -79,7 +80,9 @@ public class ContactsFragment extends Fragment {
                             public void onItemClick(View view, int position) {
                                 //startActivity(new Intent(getActivity(), ChatActivity.class));
 
-                                User userSelected = listUsers.get(position);
+                                List<User> listUserUpdated = adapterListContacts.getContacts();
+
+                                User userSelected = listUserUpdated.get(position);
                                 boolean header = userSelected.getEmail().isEmpty();
 
                                 if (header) {
@@ -167,8 +170,33 @@ public class ContactsFragment extends Fragment {
 
             }
         });
+    }
 
+    public void searchContacts(String text){
+        //Log.d("event", text);
 
+        List<User> searchForContacts = new ArrayList<>();
+
+        for ( User user : listUsers ) {
+
+            String name = user.getName().toLowerCase();
+            if (name.contains(text)) {
+                searchForContacts.add(user);
+            }
+
+        }
+
+        adapterListContacts = new AdapterContacts(searchForContacts, getActivity());
+        recyclerViewUsersContacts.setAdapter(adapterListContacts);
+        adapterListContacts.notifyDataSetChanged();
+
+    }
+
+    public void reloadSearchContacts() {
+
+        adapterListContacts = new AdapterContacts(listUsers, getActivity());
+        recyclerViewUsersContacts.setAdapter(adapterListContacts);
+        adapterListContacts.notifyDataSetChanged();
 
     }
 

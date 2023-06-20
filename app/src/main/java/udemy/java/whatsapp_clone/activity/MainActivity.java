@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
             public void onSearchViewClosed() {
                // Log.d("event","onSearchViewClosed");
                 ConversationsFragment fragment = (ConversationsFragment) adapter.getPage(0);
-                fragment.reLoadMessages();
+                fragment.reloadConversationsMessages();
             }
         });
 
@@ -89,11 +89,32 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 //Log.d("event", newText);
-                ConversationsFragment fragment = (ConversationsFragment) adapter.getPage(0);
 
-                if (newText != null && !newText.isEmpty() ) {
-                    fragment.searChConversations( newText.toLowerCase() );
+                switch (viewPager.getCurrentItem()){
+
+                    case 0:
+
+                        ConversationsFragment conversationsFragment = (ConversationsFragment) adapter.getPage(0);
+                        if (newText != null && !newText.isEmpty() ) {
+                            conversationsFragment.searchConversations( newText.toLowerCase() );
+                        }else {
+                            conversationsFragment.reloadConversationsMessages();
+                        }
+                        break;
+
+                    case 1:
+                        ContactsFragment contactsFragment = (ContactsFragment) adapter.getPage(1);
+
+                        if (newText != null && !newText.isEmpty() ) {
+                            contactsFragment.searchContacts( newText.toLowerCase() );
+                        } else {
+                            contactsFragment.reloadSearchContacts();
+                        }
+
+
+                        break;
                 }
+
 
                 return false;
             }
