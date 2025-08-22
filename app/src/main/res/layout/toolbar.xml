@@ -18,9 +18,4 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <com.miguelcatalan.materialsearchview.MaterialSearchView
-        android:id="@+id/search_viewChatUsers"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
 </FrameLayout>

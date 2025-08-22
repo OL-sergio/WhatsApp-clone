@@ -97,10 +97,10 @@ public class LoginActivity extends AppCompatActivity {
                 loginToAccount();
 
             }else {
-                Toast.makeText(LoginActivity.this, R.string.intreduzir_passaword, Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, R.string.introduzir_passaword, Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(LoginActivity.this, R.string.intreduza_email, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, R.string.introduza_email, Toast.LENGTH_SHORT).show();
                 }
             }
 

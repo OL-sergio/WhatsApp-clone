@@ -83,10 +83,10 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(this, R.string.intreduza_a_sua_password , Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(this, R.string.intreduza_email, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.introduza_email, Toast.LENGTH_SHORT).show();
             }
         }else {
-            Toast.makeText(this, R.string.Intreduza_nome, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.Introduza_nome, Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -130,9 +130,9 @@ public class RegisterActivity extends AppCompatActivity {
         try {
             throw  task.getException();
         } catch (FirebaseAuthWeakPasswordException e ) {
-            exception = getString(R.string.Intreduza_senha_mais_forte);
+            exception = getString(R.string.Introduza_senha_mais_forte);
         } catch (FirebaseAuthInvalidCredentialsException e ) {
-            exception = getString(R.string.Intreduza_email_valido);
+            exception = getString(R.string.Introduza_email_valido);
         } catch (FirebaseAuthUserCollisionException e ) {
             exception = getString(R.string.Esta_conta_existe);
         } catch (Exception e ){

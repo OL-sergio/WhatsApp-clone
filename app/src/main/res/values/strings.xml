@@ -15,11 +15,10 @@
     <string name="login">Login</string>
     <string name="regiter">Criar utilizador</string>
     <string name="intreduza_o_nome">Intreduza o nome</string>
-    <string name="intreduzir_passaword">Intreduzir a passaword!</string>
-    <string name="intreduza_email">Intreduza um email!</string>
-    <string name="Intreduza_nome">Intreduza o Nome!</string>
-    <string name="Intreduza_senha_mais_forte">Intreduza uma senha mais forte!</string>
-    <string name="Intreduza_email_valido">Intreduza um email valido!</string>
+    <string name="introduzir_passaword">Introduzir a passaword!</string>
+    <string name="introduza_email">Introduza um email!</string>
+    <string name="Introduza_nome">Introduza o Nome!</string>
+    <string name="Introduza_senha_mais_forte">Introduza uma senha mais forte!</string>
     <string name="Esta_conta_existe">Esta conta já existe!</string>
     <string name="Erro_criar_utilizador">"Erro ao criar utilizador: "</string>
     <string name="Introduza_email_valido">"Introduza um email valido! "</string>

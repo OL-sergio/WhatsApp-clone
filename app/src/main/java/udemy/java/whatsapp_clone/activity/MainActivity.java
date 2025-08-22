@@ -7,13 +7,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
@@ -28,7 +30,9 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private FirebaseAuth userAuthentication;
-    private MaterialSearchView searchView;
+    private SearchView searchView;
+    private FragmentPagerItemAdapter adapter;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,40 +49,63 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbarMain);
 
         //Configuring the fragments on view pager navigation
-        FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
+        adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), FragmentPagerItems.with(this)
                 .add(R.string.conversas, ConversationsFragment.class)
                 .add(R.string.contacts, ContactsFragment.class)
                 .create()
         );
 
-
-
-        ViewPager viewPager = findViewById(R.id.viewPager);
+        viewPager = findViewById(R.id.viewPager);
         viewPager.setAdapter(adapter);
 
         SmartTabLayout viewPagerTab = findViewById(R.id.viewPagerTab);
         viewPagerTab.setViewPager(viewPager);
 
-        searchView = binding.searchToolbar.searchViewChatUsers;
+    }
 
-        //Listener for seatView
-        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
 
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+
+        MenuItem item = menu.findItem(R.id.menuSearch);
+        searchView = (SearchView) item.getActionView();
+
+
+
+        item.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
-            public void onSearchViewShown() {
-               // Log.d("event","onSearchViewShown");
+            public boolean onMenuItemActionExpand(@NonNull MenuItem menuItem) {
+                return true;
             }
 
             @Override
-            public void onSearchViewClosed() {
-               // Log.d("event","onSearchViewClosed");
+            public boolean onMenuItemActionCollapse(@NonNull MenuItem menuItem) {
                 ConversationsFragment fragment = (ConversationsFragment) adapter.getPage(0);
                 fragment.reloadConversationsMessages();
+                return true;
             }
         });
 
-        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // Log.d("event","onSearchViewClosed");
+                ConversationsFragment fragment = (ConversationsFragment) adapter.getPage(0);
+                fragment.reloadConversationsMessages();
+                return true;
+            }
+        });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 //Log.d("event","onQueryTextSubmit");
@@ -93,44 +120,28 @@ public class MainActivity extends AppCompatActivity {
                 switch (viewPager.getCurrentItem()){
 
                     case 0:
-
                         ConversationsFragment conversationsFragment = (ConversationsFragment) adapter.getPage(0);
-                        if (newText != null && !newText.isEmpty() ) {
-                            conversationsFragment.searchConversations( newText.toLowerCase() );
-                        }else {
-                            conversationsFragment.reloadConversationsMessages();
-                        }
+                            if (newText != null && !newText.isEmpty() ) {
+                                conversationsFragment.searchConversations( newText.toLowerCase() );
+                            }else {
+                                conversationsFragment.reloadConversationsMessages();
+                            }
                         break;
 
                     case 1:
+
                         ContactsFragment contactsFragment = (ContactsFragment) adapter.getPage(1);
-
-                        if (newText != null && !newText.isEmpty() ) {
-                            contactsFragment.searchContacts( newText.toLowerCase() );
-                        } else {
-                            contactsFragment.reloadSearchContacts();
-                        }
-
-
+                            if (newText != null && !newText.isEmpty() ) {
+                                contactsFragment.searchContacts( newText.toLowerCase() );
+                            } else {
+                                contactsFragment.reloadSearchContacts();
+                            }
                         break;
+
                 }
-
-
-                return false;
+                return true;
             }
         });
-
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
-
-        MenuItem item = menu.findItem(R.id.menuSearch);
-        searchView.setMenuItem(item);
 
         return super.onCreateOptionsMenu(menu);
     }

@@ -3,8 +3,6 @@ pluginManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
-        //noinspection JcenterRepositoryObsolete
-        jcenter()
 
     }
 }
@@ -12,12 +10,19 @@ pluginManagement {
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
+        gradlePluginPortal()
         google()
         mavenCentral()
-        //noinspection JcenterRepositoryObsolete
-        jcenter()
+        maven {
+            url = uri("https://jitpack.io")
+        }
 
+        mavenLocal()
+        flatDir {
+            dirs("libs")
+        }
     }
+
 }
 
 rootProject.name = "WhatsApp-clone"
